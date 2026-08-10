@@ -1,0 +1,9 @@
+# This project runs entirely against cloud Supabase — local Docker
+# development is never used, so no local-stack ports, 127.0.0.1 URLs, or
+# local SMTP config are kept here. This file exists to identify the project
+# and to tell the CLI to apply migrations on `supabase db push`.
+
+project_id = "majesticiqos"
+
+[db.migrations]
+enabled = true

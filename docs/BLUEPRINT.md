@@ -1,6 +1,6 @@
 # Project Blueprint — Premium IQOS Accessories Store (Kosovo & Balkans)
 
-**Working codename:** `EMBER` (placeholder brand name — see §14 Naming & Legal)
+**Brand name:** `Majestiqos` (see §14 Naming & Legal — **flag for legal review**: this contains "IQOS" as a literal substring, the exact collision §14 and §8.3 warn against with the Philip Morris trademark)
 **Document version:** 1.0 — Architecture, Product & Design Specification
 **Status:** Pre-development. No code to be written until this document is approved.
 
@@ -833,16 +833,18 @@ Anti-references: rounded 3D icon rows, gradient blob backgrounds, stock-photo "h
 | `--bg-subtle`     | `#1C1C20`              | inputs, hover states     |
 | `--border`        | `#26262B`              | hairlines                |
 | `--border-strong` | `#3A3A42`              | focus, active            |
-| `--fg-primary`    | `#F5F5F7`              | headings, body           |
+| `--fg-primary`    | `#FFFFFF`               | headings, body           |
 | `--fg-secondary`  | `#A1A1AA`              | supporting copy          |
 | `--fg-muted`      | `#6B6B75`              | metadata                 |
-| `--accent`        | `#C8A06A` (warm brass) | CTAs, prices, highlights |
-| `--accent-hover`  | `#D9B57F`              |                          |
+| `--accent`        | `#00D4FF` (electric cyan) | CTAs, prices, highlights |
+| `--accent-hover`  | `#33DDFF`              |                          |
 | `--success`       | `#4ADE80`              | in stock                 |
 | `--warning`       | `#FBBF24`              | low stock                |
 | `--danger`        | `#F87171`              | errors, out of stock     |
 
-**Accent alternative** if brass reads too luxury-boutique and not enough street: `--accent: #E8FF5A` (acid lime) — colder, younger, harder. Pick one and commit; do not use both. Recommendation: **brass** for a market where "premium" is the differentiator, lime if the positioning shifts younger.
+Final decision: **electric cyan**, replacing the earlier brass/lime options below. Cyan against near-black is very high contrast (~11:1, comfortably AAA even at body-text sizes) and reads harsh in large areas — keep it to roughly 5% of any screen, same restraint brass had. `--accent-foreground` (near-black, for text placed on an accent-colored background) was added alongside it — it didn't exist before and left affected components falling back to white-on-accent text, which failed contrast under either accent colour.
+
+~~**Accent alternative** if brass reads too luxury-boutique and not enough street: `--accent: #E8FF5A` (acid lime) — colder, younger, harder. Pick one and commit; do not use both. Recommendation: **brass** for a market where "premium" is the differentiator, lime if the positioning shifts younger.~~ (superseded — cyan shipped instead)
 
 The accent appears on roughly **5% of any given screen**. Restraint is the whole strategy — everything is black, grey and white, and the one warm colour means "this matters".
 
@@ -967,7 +969,7 @@ Loyalty programme · bundle/kit builder · AR preview of cases · B2B wholesale 
 
 ### 14.1 Naming
 
-`EMBER` is a placeholder. The final name must **not** contain "IQOS" or any Philip Morris mark, must work in both Albanian and English (check for unintended meanings in Albanian), and should have an available `.com` and a matching Instagram handle. Get the name settled before Phase 0 — it propagates into the domain, logo, OG images, email, and every legal page.
+The chosen name, `Majestiqos`, must **not** contain "IQOS" or any Philip Morris mark — **it currently does** ("Majest**iqos**"), which is the specific mistake this rule exists to prevent. This needs a lawyer's sign-off (or a different name) before it propagates any further into the domain, logo, OG images, email, and every legal page. The name must also work in both Albanian and English (check for unintended meanings in Albanian) and should have an available `.com` and a matching Instagram handle.
 
 ### 14.2 Risks
 

@@ -1,0 +1,340 @@
+{
+  "common": {
+    "addToCart": "Shto në shportë",
+    "quickAdd": "Shto shpejt",
+    "loading": "Duke u ngarkuar…",
+    "viewAll": "Shiko të gjitha",
+    "search": "Kërko",
+    "close": "Mbyll",
+    "quantity": "Sasia",
+    "back": "Kthehu",
+    "save": "Ruaj",
+    "cancel": "Anulo"
+  },
+  "nav": {
+    "products": "Produktet",
+    "categories": "Kategoritë",
+    "about": "Rreth nesh",
+    "contact": "Kontakt",
+    "cart": "Shporta",
+    "menu": "Menu"
+  },
+  "home": {
+    "hero": {
+      "title": "E ndërtuar për të zgjatur.",
+      "subtitle": "Aksesorë premium, të projektuar për ritualin tënd të përditshëm.",
+      "ctaPrimary": "Shiko koleksionin",
+      "ctaSecondary": "Mëso më shumë",
+      "_todo": "Placeholder copy — replace once the brand name is finalized (see BLUEPRINT §14.1)."
+    },
+    "featured": {
+      "eyebrow": "PËRZGJEDHJA JONË",
+      "heading": "Produkte të zgjedhura"
+    },
+    "categories": {
+      "eyebrow": "KATEGORITË",
+      "heading": "Blej sipas kategorisë"
+    },
+    "bestSellers": {
+      "eyebrow": "MË TË SHITURAT",
+      "heading": "Më të shiturat"
+    },
+    "whyChooseUs": {
+      "heading": "Pse të na zgjedhësh",
+      "fastDelivery": "Dërgesë e shpejtë vendase",
+      "authenticProducts": "Produkte origjinale",
+      "cashOnDelivery": "Pagesë në dorëzim",
+      "albanianSupport": "Mbështetje në shqip"
+    },
+    "socialWall": {
+      "heading": "Na ndiq",
+      "followHandle": "Na ndiq @{handle}"
+    }
+  },
+  "product": {
+    "inStock": "Në gjendje",
+    "lowStock": "Vetëm {count} të mbetura",
+    "outOfStock": "Nuk ka në gjendje",
+    "description": "Përshkrimi",
+    "relatedProducts": "Produkte të ngjashme",
+    "quantity": "Sasia",
+    "discountBadge": "Zbritje",
+    "gallery": {
+      "thumbnailAlt": "Pamje {index} nga {total}",
+      "openLightbox": "Zgjero imazhin",
+      "previousImage": "Imazhi paraardhës",
+      "nextImage": "Imazhi tjetër"
+    },
+    "decreaseQuantity": "Zvogëlo sasinë",
+    "increaseQuantity": "Rrit sasinë",
+    "addToCartStubbed": "Shporta nuk është ende gati — së shpejti",
+    "notFoundTitle": "Produkti nuk u gjet",
+    "notFoundDescription": "Ky produkt nuk ekziston ose është hequr.",
+    "backToProducts": "Kthehu te produktet"
+  },
+  "catalog": {
+    "filters": "Filtra",
+    "clearFilters": "Pastro filtrat",
+    "sortBy": "Rendit sipas",
+    "sort": {
+      "newest": "Më të rejat",
+      "priceAsc": "Çmimi: nga më i ulëti",
+      "priceDesc": "Çmimi: nga më i larti",
+      "bestSelling": "Më të shiturat"
+    },
+    "category": "Kategoria",
+    "priceRange": "Gama e çmimit",
+    "inStockOnly": "Vetëm në gjendje",
+    "searchPlaceholder": "Kërko produkte…",
+    "noResults": "Nuk u gjet asnjë produkt.",
+    "resultsCount": "{count, plural, one {# produkt} other {# produkte}}",
+    "allCategories": "Të gjitha kategoritë",
+    "minPrice": "Çmimi minimal",
+    "maxPrice": "Çmimi maksimal",
+    "pagination": {
+      "previous": "Mbrapa",
+      "next": "Përpara",
+      "pageInfo": "Faqja {page} nga {totalPages}"
+    }
+  },
+  "cart": {
+    "title": "Shporta",
+    "empty": "Shporta juaj është e zbrazët",
+    "continueShopping": "Vazhdo blerjen",
+    "goToCart": "Shko te shporta",
+    "itemCount": "{count, plural, one {# artikull} other {# artikuj}}",
+    "remove": "Hiq",
+    "quantity": "Sasia",
+    "subtotal": "Nëntotali",
+    "shipping": "Transporti",
+    "total": "Totali",
+    "checkoutButton": "Vazhdo te arkëtimi",
+    "priceUpdated": "Çmimi u përditësua",
+    "outOfStockNotice": "Ky produkt nuk është më në gjendje",
+    "noLongerAvailable": "Nuk ofrohet më",
+    "quantityAdjusted": "Sasia u zvogëlua në {quantity} për shkak të gjendjes së kufizuar",
+    "openCart": "Hap shportën",
+    "yourCart": "Shporta jote",
+    "reconciling": "Duke kontrolluar shportën…",
+    "summary": "Përmbledhja",
+    "selectCountry": "Zgjidh shtetin për të parë koston e transportit"
+  },
+  "checkout": {
+    "title": "Arkëtimi",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "phone": "Numri i telefonit",
+    "email": "Email (opsionale)",
+    "address": "Adresa",
+    "city": "Qyteti",
+    "country": "Shteti",
+    "postalCode": "Kodi postar (opsionale)",
+    "note": "Shënim (opsionale)",
+    "notePlaceholder": "Shënim shtesë për porosinë (opsionale)",
+    "countries": {
+      "XK": "Kosovë",
+      "AL": "Shqipëri",
+      "MK": "Maqedonia e Veriut",
+      "OTHER": "Tjetër"
+    },
+    "phoneFormatHint": "Formati i pritur: {format}",
+    "paymentMethod": "Mënyra e pagesës",
+    "cashOnDelivery": "Pagesë në dorëzim (cash)",
+    "ageConfirmation": "Konfirmoj se jam mbi 18 vjeç.",
+    "orderSummary": "Përmbledhja e porosisë",
+    "submit": "Bëj porosinë",
+    "submitting": "Duke dërguar porosinë…",
+    "emptyCartToast": "Shporta është e zbrazët — shto produkte për të vazhduar",
+    "stockInsufficientError": "{product} nuk ka sasi të mjaftueshme në gjendje",
+    "networkError": "Ndodhi një gabim. Provo përsëri."
+  },
+  "order": {
+    "success": "Porosia juaj është pranuar. Shitësi do t'ju kontaktojë së shpejti për konfirmim.",
+    "orderNumber": "Numri i porosisë",
+    "items": "Artikujt",
+    "total": "Totali",
+    "contactWindow": "Do t'ju kontaktojmë shpejt për konfirmim.",
+    "savePage": "Ruaj këtë faqe",
+    "continueShopping": "Vazhdo blerjen",
+    "whatsappContact": "Na kontakto në WhatsApp",
+    "status": {
+      "pending": "Në pritje",
+      "confirmed": "Konfirmuar",
+      "preparing": "Duke u përgatitur",
+      "shipped": "Dërguar",
+      "completed": "Përfunduar",
+      "cancelled": "Anuluar"
+    }
+  },
+  "errors": {
+    "required": "Kjo fushë është e detyrueshme",
+    "invalidPhone": "Numër telefoni i pavlefshëm",
+    "invalidEmail": "Adresë email e pavlefshme",
+    "tooShort": "Duhet të ketë të paktën {min} karaktere",
+    "tooLong": "Nuk mund të kalojë {max} karaktere",
+    "selectCountry": "Zgjidh një shtet",
+    "generic": "Diçka shkoi keq. Provo përsëri."
+  },
+  "footer": {
+    "brandTagline": "Aksesorë premium për ritualin tënd të përditshëm.",
+    "shopHeading": "Dyqani",
+    "helpHeading": "Ndihmë",
+    "contactHeading": "Kontakt",
+    "links": {
+      "about": "Rreth nesh",
+      "contact": "Kontakt",
+      "terms": "Kushtet e përdorimit",
+      "privacy": "Politika e privatësisë",
+      "shippingReturns": "Transporti dhe kthimet"
+    },
+    "ageStatement": "Ky produkt u ofrohet vetëm personave mbi 18 vjeç.",
+    "trademarkDisclaimer": "Shitës i pavarur. Nuk ka lidhje me dhe nuk mbështetet nga Philip Morris International.",
+    "paymentDeliveryNote": "Pagesë në dorëzim · Dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut",
+    "copyright": "© {year} Të gjitha të drejtat e rezervuara.",
+    "instagramLabel": "Instagram",
+    "facebookLabel": "Facebook",
+    "_todo": "brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1)."
+  },
+  "seo": {
+    "defaultDescription": "Aksesorë premium për pajisjet e tabakut të nxehtë, me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut.",
+    "product": {
+      "descriptionFallback": "Blej {productName} online me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut. Pagesë në dorëzim."
+    },
+    "category": {
+      "descriptionFallback": "Blej {categoryName} te {siteName}, me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut."
+    },
+    "home": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "comingSoon": {
+    "message": "Kjo faqe do të jetë gati së shpejti."
+  },
+  "legal": {
+    "draftNotice": "SKICË PUNE — jo ende e rishikuar nga një avokat. Nuk duhet trajtuar si përfundimtare apo e besueshme deri sa të kalojë atë rishikim. Kjo faqe përjashtohet qëllimisht nga motorët e kërkimit (noindex) deri në përfundimin e rishikimit.",
+    "placeholderIntro": "Detajet e mëposhtme në këtë skicë janë vendmbajtëse (placeholder) dhe duhen zëvendësuar përpara publikimit:",
+    "placeholderItems": [
+      "Emri i subjektit juridik, numri i regjistrimit dhe adresa e regjistruar",
+      "Tarifat aktuale të dërgesës dhe afatet kohore",
+      "Periudha e kthimit/tërheqjes sipas ligjit vendas",
+      "Adresa email/telefoni për kërkesa mbi të dhënat personale"
+    ],
+    "terms": {
+      "title": "Kushtet e Përdorimit",
+      "sections": [
+        {
+          "heading": "1. Kush e operon këtë dyqan",
+          "body": [
+            "Majestiqos është një shitës online i pavarur. [EMRI I SUBJEKTIT JURIDIK, NUMRI I REGJISTRIMIT DHE ADRESA E REGJISTRUAR — PËR T'U KONFIRMUAR] është biznesi që qëndron pas kësaj faqeje. Të dhënat e kontaktit gjenden në faqen Kontakt dhe në fund të çdo faqeje; aktualisht ato janë vendmbajtëse (placeholder) në pritje të konfirmimit — shih njoftimin në krye të kësaj faqeje."
+          ]
+        },
+        {
+          "heading": "2. Natyra e produkteve dhe kufizimi i moshës",
+          "body": [
+            "Çdo produkt që shitet këtu është aksesor për pajisje me duhan të nxehtë — çanta, mbulesa, karikues, vegla pastrimi, rripa mbajtës dhe mbajtëse. Ky dyqan nuk shet duhan, nikotinë apo vetë pajisjet me duhan të nxehtë.",
+            "Meqë këto aksesorë janë të destinuara për t'u përdorur me një produkt duhani, shitja u kufizohet blerësve mbi moshën 18 vjeç. Duke bërë një porosi, ju konfirmoni se jeni të paktën 18 vjeç. Korrieri mund të kërkojë dëshmi të moshës në momentin e dorëzimit, dhe dorëzimi mund të refuzohet nëse mosha nuk mund të konfirmohet me arsye."
+          ]
+        },
+        {
+          "heading": "3. Si funksionon porositja",
+          "body": [
+            "Arka (checkout) kërkon vetëm informacionin e nevojshëm për të përmbushur porosinë tuaj — emrin, numrin e telefonit, adresën e dërgesës dhe, opsionalisht, një email. Çmimet, zbritjet dhe totali i porosisë llogariten gjithmonë nga sistemet tona bazuar në çmimin real e aktual të çdo produkti; asnjë vlerë e futur nga ana juaj si çmim apo total nuk merret parasysh apo besohet.",
+            "Pasi të dërgoni një porosi, ju kontaktojmë me telefon për të konfirmuar detajet përpara se të përgatitet për dërgesë."
+          ]
+        },
+        {
+          "heading": "4. Pagesa",
+          "body": [
+            "Pagesa bëhet vetëm në dorëzim (cash on delivery). Ju paguani korrierin në para të gatshme kur mbërrin porosia. Ne nuk mbledhim numra kartash, të dhëna bankare apo ndonjë informacion tjetër pagese përmes kësaj faqeje."
+          ]
+        },
+        {
+          "heading": "5. Çmimet",
+          "body": [
+            "Të gjitha çmimet shfaqen në euro (EUR), duke përfshirë çdo taksë të aplikueshme. Çmimi i shfaqur në faqen e produktit dhe në shportën tuaj në momentin e dërgimit të porosisë është çmimi që paguani — një ndryshim i mëvonshëm i çmimit të një produkti nuk ndikon te një porosi tashmë e bërë."
+          ]
+        },
+        {
+          "heading": "6. Dërgesa",
+          "body": [
+            "Aktualisht dërgojmë në Kosovë, Shqipëri dhe Maqedoninë e Veriut. Kostoja e dërgesës është [€2.00 për Kosovë; €5.00 për Shqipërinë, Maqedoninë e Veriut dhe destinacione të tjera — KONFIRMO TARIFAT AKTUALE, TË CILAT VENDOSEN NGA PANELI I ADMINISTRATORIT DHE MUND TË NDRYSHOJNË]. Dërgesa zakonisht zgjat [2–5 ditë pune — PËR T'U KONFIRMUAR], në varësi të destinacionit dhe disponueshmërisë së korrierit. Do të kontaktoheni me telefon përpara dorëzimit."
+          ]
+        },
+        {
+          "heading": "7. Anulimi dhe kthimi",
+          "body": [
+            "Mund të anuloni një porosi në çdo kohë përpara se të dërgohet, duke na kontaktuar me të dhënat në faqen Kontakt. Meqë pagesa mblidhet në dorëzim, jeni gjithashtu të lirë ta refuzoni porosinë te dera nëse nuk e doni më, pa asnjë kosto për ju.",
+            "Pasi një porosi është pranuar dhe paguar, kthimet trajtohen rast pas rasti — na kontaktoni brenda [14 ditësh — PËR T'U KONFIRMUAR] nga dorëzimi nëse një produkt mbërrin i dëmtuar, me defekt, apo dukshëm i ndryshëm nga sa është porositur.",
+            "[KY SEKSION DUHET TË PËRPUTHET ME LIGJIN PËR MBROJTJEN E KONSUMATORIT NË KOSOVË/SHQIPËRI/MAQEDONINË E VERIUT — NJË AVOKAT DUHET TË KONFIRMOJË PERIUDHËN E TËRHEQJES DHE TË DREJTAT E KTHIMIT PARA SE KJO TË SHKOJË NË PRODHIM.]"
+          ]
+        },
+        {
+          "heading": "8. Kufizimi i përgjegjësisë",
+          "body": [
+            "Ne kujdesemi në mënyrë të arsyeshme që t'i përshkruajmë produktet saktë dhe t'i përmbushim porositë ashtu siç janë bërë. Në masën më të gjerë të lejuar nga ligji, ne nuk mbajmë përgjegjësi për humbje indirekte, aksidentale apo pasuese që rrjedhin nga përdorimi i kësaj faqeje apo blerja e një produkti, përtej vlerës së vetë porosisë. Asgjë në këto kushte nuk kufizon ndonjë përgjegjësi që nuk mund të kufizohet sipas ligjit në fuqi."
+          ]
+        },
+        {
+          "heading": "9. Shënim mbi markën tregtare",
+          "body": [
+            "\"IQOS\" është markë e regjistruar tregtare e Philip Morris International. Majestiqos është shitës i pavarur i aksesorëve nga palë të treta, të përshtatshëm me pajisjet IQOS. Ne nuk kemi lidhje me, nuk sponsorizohemi nga dhe nuk mbështetemi nga Philip Morris International apo ndonjë nga filialet e saj. Çdo referencë ndaj IQOS bëhet vetëm për të përshkruar përputhshmërinë."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Politika e Privatësisë",
+      "sections": [
+        {
+          "heading": "1. Çfarë mbledhim",
+          "body": [
+            "Për të përmbushur një porosi, mbledhim emrin dhe mbiemrin tuaj, numrin e telefonit, adresën e dërgesës (përfshirë qytetin dhe shtetin) dhe, nëse zgjidhni ta jepni, adresën tuaj email. Ruajmë gjithashtu produktet dhe sasitë e porosisë suaj, dhe një shënim të shkurtër nëse i lini një të tillë për korrierin."
+          ]
+        },
+        {
+          "heading": "2. Pse i mbledhim",
+          "body": [
+            "I përdorim këto të dhëna për një qëllim të vetëm: për të përgatitur, konfirmuar me telefon dhe dorëzuar porosinë tuaj. Nuk i përdorim për marketing, përveçse nëse ju vetë e pranoni këtë shprehimisht në të ardhmen."
+          ]
+        },
+        {
+          "heading": "3. Të dhënat e pagesës",
+          "body": [
+            "Ne nuk mbledhim asnjë të dhënë pagese. Pagesa bëhet në dorëzim, e mbledhur nga korrieri — asnjë numër karte, të dhëna bankare apo informacion i ngjashëm nuk kalon kurrë përmes kësaj faqeje apo sistemeve tona."
+          ]
+        },
+        {
+          "heading": "4. Sa kohë i ruajmë",
+          "body": [
+            "Të dhënat e porosisë ruhen për 24 muaj nga data e porosisë, pas së cilës të dhënat personale të porosisë bëhen anonime, ndërsa regjistrimi bazë i shitjes ruhet për qëllime kontabël. Nëse kërkoni fshirje më të hershme, shihni \"Të drejtat tuaja\" më poshtë."
+          ]
+        },
+        {
+          "heading": "5. Me kë i ndajmë",
+          "body": [
+            "Emri, numri i telefonit dhe adresa e dërgesës suaj ndahen me kompaninë e korrierit që dërgon porosinë tuaj — kjo është pala e vetme e tretë me të cilën ndahet informacioni juaj. Nuk e shesim informacionin tuaj tek askush, për asnjë arsye."
+          ]
+        },
+        {
+          "heading": "6. Të drejtat tuaja",
+          "body": [
+            "Mund të na kërkoni në çdo kohë të ju tregojmë çfarë informacioni mbajmë për ju, ose ta fshijmë atë — shihni faqen Kontakt për mënyrën se si të na kontaktoni. Do të veprojmë sipas një kërkese për fshirje, përveçse nëse jemi të detyruar ligjërisht të ruajmë regjistrimin bazë të porosisë (për shembull, për qëllime kontabël), rast në të cilin i bëjmë anonime të dhënat personale."
+          ]
+        },
+        {
+          "heading": "7. Cookies",
+          "body": [
+            "Kjo faqe nuk përdor cookies marketingu apo analitike. Përdor një sasi të vogël të dhënash funksionale për të mbajtur mend shportën tuaj dhe preferencën e gjuhës (shqip ose anglisht) mes vizitave — asgjë që ju identifikon personalisht, dhe asgjë e përdorur për t'ju gjurmuar në faqe të tjera."
+          ]
+        },
+        {
+          "heading": "8. Na kontaktoni",
+          "body": [
+            "Për çdo pyetje rreth kësaj politike, ose për të ushtruar të drejtat e sipërpërmendura, na kontaktoni me të dhënat në faqen Kontakt. [EMAIL/TELEFON KONTAKTI PËR KËRKESA TË TË DHËNAVE — PËR T'U KONFIRMUAR.]"
+          ]
+        }
+      ]
+    }
+  }
+}

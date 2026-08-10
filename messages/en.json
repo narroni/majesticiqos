@@ -1,0 +1,340 @@
+{
+  "common": {
+    "addToCart": "Add to cart",
+    "quickAdd": "Quick add",
+    "loading": "Loading…",
+    "viewAll": "View all",
+    "search": "Search",
+    "close": "Close",
+    "quantity": "Quantity",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "nav": {
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "menu": "Menu"
+  },
+  "home": {
+    "hero": {
+      "title": "Built to last.",
+      "subtitle": "Premium accessories, designed for your everyday ritual.",
+      "ctaPrimary": "Shop the collection",
+      "ctaSecondary": "Learn more",
+      "_todo": "Placeholder copy — replace once the brand name is finalized (see BLUEPRINT §14.1)."
+    },
+    "featured": {
+      "eyebrow": "OUR SELECTION",
+      "heading": "Featured products"
+    },
+    "categories": {
+      "eyebrow": "CATEGORIES",
+      "heading": "Shop by category"
+    },
+    "bestSellers": {
+      "eyebrow": "BEST SELLERS",
+      "heading": "Best sellers"
+    },
+    "whyChooseUs": {
+      "heading": "Why choose us",
+      "fastDelivery": "Fast local delivery",
+      "authenticProducts": "Authentic products",
+      "cashOnDelivery": "Cash on delivery",
+      "albanianSupport": "Support in Albanian"
+    },
+    "socialWall": {
+      "heading": "Follow us",
+      "followHandle": "Follow @{handle}"
+    }
+  },
+  "product": {
+    "inStock": "In stock",
+    "lowStock": "Only {count} left",
+    "outOfStock": "Out of stock",
+    "description": "Description",
+    "relatedProducts": "Related products",
+    "quantity": "Quantity",
+    "discountBadge": "Sale",
+    "gallery": {
+      "thumbnailAlt": "View {index} of {total}",
+      "openLightbox": "Expand image",
+      "previousImage": "Previous image",
+      "nextImage": "Next image"
+    },
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "addToCartStubbed": "Cart isn't ready yet — coming soon",
+    "notFoundTitle": "Product not found",
+    "notFoundDescription": "This product doesn't exist or has been removed.",
+    "backToProducts": "Back to products"
+  },
+  "catalog": {
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "sortBy": "Sort by",
+    "sort": {
+      "newest": "Newest",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "bestSelling": "Best selling"
+    },
+    "category": "Category",
+    "priceRange": "Price range",
+    "inStockOnly": "In stock only",
+    "searchPlaceholder": "Search products…",
+    "noResults": "No products found.",
+    "resultsCount": "{count, plural, one {# product} other {# products}}",
+    "allCategories": "All categories",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageInfo": "Page {page} of {totalPages}"
+    }
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "goToCart": "Go to cart",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "checkoutButton": "Proceed to checkout",
+    "priceUpdated": "Price updated",
+    "outOfStockNotice": "This item is now out of stock",
+    "noLongerAvailable": "No longer available",
+    "quantityAdjusted": "Quantity reduced to {quantity} due to limited stock",
+    "openCart": "Open cart",
+    "yourCart": "Your cart",
+    "reconciling": "Checking your cart…",
+    "summary": "Summary",
+    "selectCountry": "Select a country to see shipping cost"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "email": "Email (optional)",
+    "address": "Address",
+    "city": "City",
+    "country": "Country",
+    "postalCode": "Postal code (optional)",
+    "note": "Note (optional)",
+    "notePlaceholder": "Additional note for your order (optional)",
+    "countries": {
+      "XK": "Kosovo",
+      "AL": "Albania",
+      "MK": "North Macedonia",
+      "OTHER": "Other"
+    },
+    "phoneFormatHint": "Expected format: {format}",
+    "paymentMethod": "Payment method",
+    "cashOnDelivery": "Cash on delivery",
+    "ageConfirmation": "I confirm that I am over 18 years old.",
+    "orderSummary": "Order summary",
+    "submit": "Place order",
+    "submitting": "Placing your order…",
+    "emptyCartToast": "Your cart is empty — add products to continue",
+    "stockInsufficientError": "{product} doesn't have enough stock available",
+    "networkError": "Something went wrong. Please try again."
+  },
+  "order": {
+    "success": "Your order has been received. The seller will contact you soon for confirmation.",
+    "orderNumber": "Order number",
+    "items": "Items",
+    "total": "Total",
+    "contactWindow": "We'll contact you shortly to confirm.",
+    "savePage": "Save this page",
+    "continueShopping": "Continue shopping",
+    "whatsappContact": "Contact us on WhatsApp",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "errors": {
+    "required": "This field is required",
+    "invalidPhone": "Invalid phone number",
+    "invalidEmail": "Invalid email address",
+    "tooShort": "Must be at least {min} characters",
+    "tooLong": "Must not exceed {max} characters",
+    "selectCountry": "Please select a country",
+    "generic": "Something went wrong. Please try again."
+  },
+  "footer": {
+    "brandTagline": "Premium accessories for your everyday ritual.",
+    "shopHeading": "Shop",
+    "helpHeading": "Help",
+    "contactHeading": "Contact",
+    "links": {
+      "about": "About",
+      "contact": "Contact",
+      "terms": "Terms of service",
+      "privacy": "Privacy policy",
+      "shippingReturns": "Shipping & returns"
+    },
+    "ageStatement": "This product is intended for adults 18 years and older.",
+    "trademarkDisclaimer": "An independent retailer. Not affiliated with or endorsed by Philip Morris International.",
+    "paymentDeliveryNote": "Cash on delivery · Delivery to Kosovo, Albania and North Macedonia",
+    "copyright": "© {year} All rights reserved.",
+    "instagramLabel": "Instagram",
+    "facebookLabel": "Facebook",
+    "_todo": "brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1)."
+  },
+  "seo": {
+    "defaultDescription": "Premium accessories for heated-tobacco devices, with delivery to Kosovo, Albania and North Macedonia.",
+    "product": {
+      "descriptionFallback": "Buy {productName} online with delivery to Kosovo, Albania and North Macedonia. Cash on delivery."
+    },
+    "category": {
+      "descriptionFallback": "Shop {categoryName} at {siteName}, with delivery to Kosovo, Albania and North Macedonia."
+    },
+    "home": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "comingSoon": {
+    "message": "This page is coming soon."
+  },
+  "legal": {
+    "draftNotice": "WORKING DRAFT — not yet reviewed by a lawyer. Do not treat as final or rely on it until that review is complete. This page is intentionally excluded from search engines (noindex) until then.",
+    "placeholderIntro": "The following details in this draft are placeholders and must be replaced before this goes live:",
+    "placeholderItems": [
+      "Legal entity name, registration number, and registered address",
+      "Current shipping rates and timeframes",
+      "Return/cooling-off period under local law",
+      "Contact email/phone for personal data requests"
+    ],
+    "terms": {
+      "title": "Terms of Use",
+      "sections": [
+        {
+          "heading": "1. Who operates this store",
+          "body": [
+            "Majestiqos is an independent online retailer. [LEGAL ENTITY NAME, REGISTRATION NUMBER, AND REGISTERED ADDRESS — TO BE CONFIRMED] is the operating business behind this website. Contact details are listed on the Contact page and in the site footer; those details are currently placeholders pending confirmation — see the notice at the top of this page."
+          ]
+        },
+        {
+          "heading": "2. Nature of the products and age restriction",
+          "body": [
+            "Every product sold here is an accessory for heated-tobacco devices — cases, covers, chargers, cleaning tools, lanyards, and holders. This store does not sell tobacco, nicotine, or heated-tobacco devices themselves.",
+            "Because these accessories are intended for use with a tobacco product, they are restricted to buyers aged 18 and over. By placing an order, you confirm you are at least 18 years old. The courier may request proof of age on delivery, and delivery may be refused if age cannot be reasonably confirmed."
+          ]
+        },
+        {
+          "heading": "3. How ordering works",
+          "body": [
+            "Checkout requires only the information needed to fulfil your order — name, phone number, delivery address, and an optional email. Prices, discounts, and the order total are always calculated by our systems from the current, real price of each product; nothing entered by you as a price or total is ever trusted or used.",
+            "Once you submit an order, we contact you by phone to confirm the details before it is prepared for delivery."
+          ]
+        },
+        {
+          "heading": "4. Payment",
+          "body": [
+            "Payment is cash on delivery only. You pay the courier in cash when your order arrives. We do not collect card numbers, bank details, or any other payment information through this website."
+          ]
+        },
+        {
+          "heading": "5. Prices",
+          "body": [
+            "All prices are shown in euro (EUR), including any applicable taxes. The price shown on the product page and in your cart at the time you submit an order is the price you pay — a later change to a product's price does not affect an order already placed."
+          ]
+        },
+        {
+          "heading": "6. Shipping",
+          "body": [
+            "We currently deliver to Kosovo, Albania, and North Macedonia. Shipping cost is [€2.00 to Kosovo; €5.00 to Albania, North Macedonia, and other destinations — CONFIRM CURRENT RATES, WHICH ARE SET IN THE ADMIN PANEL AND MAY CHANGE]. Typical delivery takes [2–5 business days — TO BE CONFIRMED], depending on destination and courier availability. You will be contacted by phone before delivery."
+          ]
+        },
+        {
+          "heading": "7. Cancellation and returns",
+          "body": [
+            "You may cancel an order any time before it has shipped by contacting us using the details on the Contact page. Because payment is collected on delivery, you are also free to decline an order at the door if you no longer want it, at no cost to you.",
+            "Once an order has been accepted and paid for, returns are handled case by case — contact us within [14 days — TO BE CONFIRMED] of delivery if a product arrives damaged, faulty, or materially different from what was ordered.",
+            "[THIS SECTION MUST BE ALIGNED WITH KOSOVO/ALBANIA/NORTH MACEDONIA CONSUMER PROTECTION LAW — A LAWYER SHOULD CONFIRM THE APPLICABLE COOLING-OFF PERIOD AND RETURN RIGHTS BEFORE THIS GOES LIVE.]"
+          ]
+        },
+        {
+          "heading": "8. Limitation of liability",
+          "body": [
+            "We take reasonable care to describe products accurately and to fulfil orders as placed. To the fullest extent permitted by law, we are not liable for indirect, incidental, or consequential loss arising from your use of this website or your purchase of a product, beyond the value of the order itself. Nothing in these terms limits any liability that cannot be limited under applicable law."
+          ]
+        },
+        {
+          "heading": "9. Trademark disclaimer",
+          "body": [
+            "\"IQOS\" is a registered trademark of Philip Morris International. Majestiqos is an independent retailer of third-party accessories that are compatible with IQOS devices. We are not affiliated with, sponsored by, or endorsed by Philip Morris International or any of its affiliates. Any reference to IQOS is solely to describe compatibility."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "sections": [
+        {
+          "heading": "1. What we collect",
+          "body": [
+            "To fulfil an order, we collect your first and last name, phone number, delivery address (including city and country), and, if you choose to provide one, your email address. We also store the products and quantities in your order, and a brief note if you leave one for the courier."
+          ]
+        },
+        {
+          "heading": "2. Why we collect it",
+          "body": [
+            "We use this information for one purpose: to prepare, confirm by phone, and deliver your order. We do not use it for marketing unless you separately and explicitly agree to that in the future."
+          ]
+        },
+        {
+          "heading": "3. Payment data",
+          "body": [
+            "We do not collect any payment data. Payment is cash on delivery, collected by the courier — no card numbers, bank details, or similar information ever passes through this website or our systems."
+          ]
+        },
+        {
+          "heading": "4. How long we keep it",
+          "body": [
+            "Order records are kept for 24 months after the order date, after which the personal details on the order are anonymized while the underlying sales record is kept for accounting purposes. If you request earlier deletion, see \"Your rights\" below."
+          ]
+        },
+        {
+          "heading": "5. Who we share it with",
+          "body": [
+            "Your name, phone number, and delivery address are shared with the courier company delivering your order — that is the only third party your information is shared with. We do not sell your information to anyone, for any reason."
+          ]
+        },
+        {
+          "heading": "6. Your rights",
+          "body": [
+            "You can ask us to tell you what information we hold about you, or to delete it, at any time — see the Contact page for how to reach us. We will act on a deletion request unless we are legally required to keep the underlying order record (for example, for accounting purposes), in which case we anonymize the personal details instead."
+          ]
+        },
+        {
+          "heading": "7. Cookies",
+          "body": [
+            "This website does not use marketing or analytics cookies. It uses one small, functional piece of stored data to remember your cart and your language preference (Albanian or English) between visits — nothing that identifies you personally, and nothing used to track you across other websites."
+          ]
+        },
+        {
+          "heading": "8. Contact",
+          "body": [
+            "For any question about this policy, or to exercise your rights above, contact us using the details on the Contact page. [CONTACT EMAIL/PHONE FOR DATA REQUESTS — TO BE CONFIRMED.]"
+          ]
+        }
+      ]
+    }
+  }
+}

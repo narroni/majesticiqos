@@ -50,3 +50,13 @@ translation table rows. Never hardcode Albanian (or English) UI text in a compon
 18. Do one thing per response. Do not scaffold ahead.
 19. After changing the database schema, tell me to run the type generation script.
 20. If a requirement is ambiguous, ask before writing code.
+
+## Caching rules
+
+21. Cache tags for product/category data are keyed by **slug**, not id —
+    `product:{slug}`, `category:{slug}`. The id isn't known until after the
+    query resolves (the DAL fetches by slug), so slug is the only identifier
+    available at fetch time to tag with. Any future admin mutation (product
+    or category edit) must call `revalidateTag()` with the **slug**, not the
+    id. This is easy to get wrong and silently breaks cache invalidation
+    when it is — a stale page with no error to point at.

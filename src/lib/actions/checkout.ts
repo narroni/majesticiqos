@@ -10,6 +10,7 @@ import { getProductsForCheckout } from "@/lib/data/products";
 import { getShippingRate } from "@/lib/data/shipping";
 import { calculateSubtotal, calculateTotal, getLineTotal, getShippingCost } from "@/lib/pricing";
 import { checkRateLimit, hashIp } from "@/lib/rate-limit";
+import { redis } from "@/lib/redis";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import {
   checkoutCartItemSchema,
@@ -60,11 +61,68 @@ export type CheckoutActionResult =
   | { success: true; orderNumber: string; publicToken: string }
   | { success: false; errors: CheckoutFieldError[] };
 
-// Same in-memory caveat as rate-limit.ts: resets on restart, doesn't share
-// state across instances. Needs a real store (Redis/DB) before production;
-// fine for now since it only protects against accidental double-submit
-// within a single session on a single instance.
-const idempotencyCache = new Map<string, CheckoutActionResult>();
+const IDEMPOTENCY_TTL_SECONDS = 10 * 60;
+const IDEMPOTENCY_KEY_PREFIX = "checkout:idempotency:";
+
+// In-memory fallback — only used when Redis isn't configured (src/lib/redis.ts
+// logs a warning in that case). Same caveat as rate-limit.ts's fallback:
+// resets on restart, doesn't share state across instances. TTL is enforced
+// manually here since a plain Map never expires entries on its own.
+const idempotencyCacheFallback = new Map<
+  string,
+  { value: CheckoutActionResult; expiresAt: number }
+>();
+
+async function getCachedResult(key: string): Promise<CheckoutActionResult | null> {
+  if (!redis) {
+    const entry = idempotencyCacheFallback.get(key);
+    if (!entry) return null;
+    if (entry.expiresAt < Date.now()) {
+      idempotencyCacheFallback.delete(key);
+      return null;
+    }
+    return entry.value;
+  }
+
+  try {
+    return await redis.get<CheckoutActionResult>(IDEMPOTENCY_KEY_PREFIX + key);
+  } catch (error) {
+    // Same fail-open reasoning as checkRateLimit below: a Redis hiccup here
+    // just means we treat this as a fresh submission instead of a replay —
+    // worst case a rare double-submit gets through, which is far better
+    // than blocking every checkout while Redis is degraded.
+    console.error(
+      "[checkout] Redis error while reading the idempotency cache — treating as a cache miss.",
+      error,
+    );
+    return null;
+  }
+}
+
+async function setCachedResult(key: string, value: CheckoutActionResult): Promise<void> {
+  if (!redis) {
+    idempotencyCacheFallback.set(key, {
+      value,
+      expiresAt: Date.now() + IDEMPOTENCY_TTL_SECONDS * 1000,
+    });
+    return;
+  }
+
+  try {
+    await redis.set(IDEMPOTENCY_KEY_PREFIX + key, value, { ex: IDEMPOTENCY_TTL_SECONDS });
+  } catch (error) {
+    // The order already succeeded and its result already went back to this
+    // caller — losing the cache write just means a same-key retry within
+    // the TTL window would be treated as a fresh submission (cache miss)
+    // rather than replayed. That's the same rare-double-submit exposure as
+    // a read failure, not a new one, so it's logged rather than surfaced
+    // as an error to the customer.
+    console.error(
+      "[checkout] Redis error while writing the idempotency cache — a retry with the same key won't be deduped.",
+      error,
+    );
+  }
+}
 
 function genericFailure(message: string): CheckoutActionResult {
   return { success: false, errors: [{ field: "form", message }] };
@@ -109,7 +167,7 @@ export async function submitCheckout(
   }
 
   // Idempotency — a double-submit with the same key replays the first result.
-  const cached = idempotencyCache.get(actionResult.data.idempotencyKey);
+  const cached = await getCachedResult(actionResult.data.idempotencyKey);
   if (cached) {
     return cached;
   }
@@ -123,7 +181,7 @@ export async function submitCheckout(
   const userAgent = headerList.get("user-agent");
   const ipHash = hashIp(ip);
 
-  if (!checkRateLimit(ipHash).allowed) {
+  if (!(await checkRateLimit(ipHash)).allowed) {
     return genericFailure(tErrors("generic"));
   }
 
@@ -240,6 +298,6 @@ export async function submitCheckout(
     publicToken: row.public_token,
   };
 
-  idempotencyCache.set(actionResult.data.idempotencyKey, result);
+  await setCachedResult(actionResult.data.idempotencyKey, result);
   return result;
 }

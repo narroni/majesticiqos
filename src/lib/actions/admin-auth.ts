@@ -44,7 +44,7 @@ export async function signInAdmin(
     "unknown";
   const ipHash = hashIp(ip);
 
-  if (!checkLoginRateLimit(ipHash, parsed.data.email).allowed) {
+  if (!(await checkLoginRateLimit(ipHash, parsed.data.email)).allowed) {
     return { error: "Too many attempts. Try again in a few minutes." };
   }
 

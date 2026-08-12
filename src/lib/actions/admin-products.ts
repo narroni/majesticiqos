@@ -304,13 +304,14 @@ export async function toggleProductActive(
     return { success: false, error: "Unauthorized" };
   }
 
-  // The rule that matters, enforced here too — the list page's toggle is
-  // just another public entry point into setting is_active, and a UI guard
-  // there proves nothing on its own.
+  // The one hard rule, enforced here too — the list page's toggle is just
+  // another public entry point into setting is_active, and a UI guard there
+  // proves nothing on its own. Incomplete translations no longer block
+  // activation, only the image requirement does.
   if (parsed.data.nextValue && !(await isProductReadyForActive(parsed.data.id))) {
     return {
       success: false,
-      error: "Add at least one image and complete both-locale translations before activating.",
+      error: "Add at least one image before activating.",
     };
   }
 

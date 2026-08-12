@@ -32,7 +32,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkSlugAvailability, saveProduct } from "@/lib/actions/admin-products";
 import type { AdminCategoryOption } from "@/lib/data/admin-products";
 import { slugify } from "@/lib/utils";
-import { adminProductSchema, type AdminProductValues } from "@/lib/validation/admin-product";
+import {
+  adminProductSchema,
+  getIncompleteLocales,
+  type AdminProductValues,
+} from "@/lib/validation/admin-product";
+
+const LOCALE_LABEL: Record<"sq" | "en", string> = { sq: "Albanian", en: "English" };
 
 const NO_CATEGORY = "none";
 const SLUG_CHECK_DEBOUNCE_MS = 500;
@@ -57,6 +63,15 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
 
   const nameSq = useWatch({ control: form.control, name: "nameSq" });
   const slug = useWatch({ control: form.control, name: "slug" });
+  const watchedValues = useWatch({ control: form.control });
+  const incompleteLocales = getIncompleteLocales({
+    nameSq: watchedValues.nameSq ?? "",
+    shortDescriptionSq: watchedValues.shortDescriptionSq ?? "",
+    descriptionSq: watchedValues.descriptionSq ?? "",
+    nameEn: watchedValues.nameEn ?? "",
+    shortDescriptionEn: watchedValues.shortDescriptionEn ?? "",
+    descriptionEn: watchedValues.descriptionEn ?? "",
+  });
 
   // Base UI's <Select.Value> resolves the trigger's displayed label from
   // this `items` map (value -> label), not from the rendered <SelectItem>
@@ -329,12 +344,19 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
                         Active (visible on the storefront)
                       </FormLabel>
                       <p className="text-fg-muted font-body text-xs">
-                        Requires at least one image and complete translations in both languages.
+                        Requires at least one image. Incomplete translations are allowed but shown as a warning.
                       </p>
                     </div>
                   </FormItem>
                 )}
               />
+
+              {incompleteLocales.length > 0 && (
+                <div className="border-warning/40 bg-warning/10 text-warning rounded-md border px-3 py-2 font-body text-xs">
+                  Incomplete translation: {incompleteLocales.map((locale) => LOCALE_LABEL[locale]).join(", ")}.
+                  The product can still be published, but these fields are missing content.
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>

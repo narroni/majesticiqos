@@ -30,7 +30,7 @@ export async function Hero({ locale }: { locale: Locale }) {
       ctaText={ctaText}
       ctaHref={getPathname({ href: ctaHrefRaw, locale })}
       secondaryCtaText={t("ctaSecondary")}
-      secondaryCtaHref={getPathname({ href: "/about", locale })}
+      secondaryCtaHref={getPathname({ href: "/categories", locale })}
       images={settings.heroImages}
     />
   );

@@ -60,37 +60,54 @@ export const adminProductSchema = z
       });
     }
 
-    // The rule that matters (BLUEPRINT §6.2): can't go active without
-    // complete translations in both locales AND at least one image.
-    if (data.isActive) {
-      const requiredTextFields: { key: keyof typeof data; label: string }[] = [
-        { key: "nameSq", label: "Albanian name" },
-        { key: "shortDescriptionSq", label: "Albanian short description" },
-        { key: "descriptionSq", label: "Albanian description" },
-        { key: "nameEn", label: "English name" },
-        { key: "shortDescriptionEn", label: "English short description" },
-        { key: "descriptionEn", label: "English description" },
-      ];
-
-      for (const field of requiredTextFields) {
-        const value = data[field.key];
-        if (typeof value !== "string" || value.trim().length === 0) {
-          ctx.addIssue({
-            code: "custom",
-            message: `${field.label} is required to activate this product`,
-            path: [field.key],
-          });
-        }
-      }
-
-      if (data.images.length === 0) {
-        ctx.addIssue({
-          code: "custom",
-          message: "At least one image is required to activate this product",
-          path: ["images"],
-        });
-      }
+    // The only hard block on activation (BLUEPRINT §6.2, relaxed): at least
+    // one image. Incomplete translations no longer block publishing — they
+    // only surface as a warning (see REQUIRED_TRANSLATION_FIELDS below and
+    // the admin product list/form UI), since a seller may legitimately want
+    // to publish in one locale before the other is ready.
+    if (data.isActive && data.images.length === 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "At least one image is required to activate this product",
+        path: ["images"],
+      });
     }
   });
 
 export type AdminProductValues = z.infer<typeof adminProductSchema>;
+
+// Locale completeness is a warning, not a validation rule — see the
+// superRefine above. Shared by the product form and the admin products list
+// so both flag the same fields the same way.
+export const REQUIRED_TRANSLATION_FIELDS: {
+  key: keyof AdminProductValues;
+  locale: "sq" | "en";
+  label: string;
+}[] = [
+  { key: "nameSq", locale: "sq", label: "Albanian name" },
+  { key: "shortDescriptionSq", locale: "sq", label: "Albanian short description" },
+  { key: "descriptionSq", locale: "sq", label: "Albanian description" },
+  { key: "nameEn", locale: "en", label: "English name" },
+  { key: "shortDescriptionEn", locale: "en", label: "English short description" },
+  { key: "descriptionEn", locale: "en", label: "English description" },
+];
+
+export function getIncompleteLocales(values: {
+  nameSq: string;
+  shortDescriptionSq: string;
+  descriptionSq: string;
+  nameEn: string;
+  shortDescriptionEn: string;
+  descriptionEn: string;
+}): ("sq" | "en")[] {
+  const incomplete = new Set<"sq" | "en">();
+
+  for (const field of REQUIRED_TRANSLATION_FIELDS) {
+    const value = values[field.key as keyof typeof values];
+    if (typeof value !== "string" || value.trim().length === 0) {
+      incomplete.add(field.locale);
+    }
+  }
+
+  return [...incomplete];
+}

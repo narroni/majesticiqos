@@ -9,8 +9,9 @@ import { routing } from "@/i18n/routing";
 // product, every category, and the categories index. Deliberately excludes
 // /admin, /api, /order/*, /design-system, /checkout, /cart (personalized,
 // PII-bearing, or internal — see app/robots.ts for the crawl-level version
-// of the same exclusions) and the bare-stub static pages (About, Contact,
-// Terms, Privacy, Shipping & Returns — no real content behind them yet).
+// of the same exclusions) and the bare-stub static pages (Contact, Terms,
+// Privacy, Shipping & Returns — no real content behind them yet, other than
+// the Instagram redirect on Contact, which isn't worth indexing on its own).
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const locales = routing.locales;

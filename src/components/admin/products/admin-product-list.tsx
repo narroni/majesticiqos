@@ -62,6 +62,8 @@ const STOCK_CLASS: Record<AdminProductListItem["stockStatus"], string> = {
   out_of_stock: "text-danger",
 };
 
+const LOCALE_LABEL: Record<"sq" | "en", string> = { sq: "SQ", en: "EN" };
+
 export function AdminProductList({ products }: AdminProductListProps) {
   // Optimistic overrides layered on top of the server-provided list, rather
   // than copying `products` into local state — that would go stale the
@@ -239,8 +241,11 @@ export function AdminProductList({ products }: AdminProductListProps) {
                 <TableCell>
                   <Thumbnail product={product} />
                 </TableCell>
-                <TableCell className="max-w-56 truncate font-medium whitespace-normal">
-                  {product.nameSq}
+                <TableCell className="max-w-56 font-medium whitespace-normal">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="truncate">{product.nameSq}</span>
+                    <IncompleteTranslationBadge product={product} />
+                  </div>
                 </TableCell>
                 <TableCell className="text-fg-secondary">
                   {product.categoryName ?? "—"}
@@ -292,9 +297,12 @@ export function AdminProductList({ products }: AdminProductListProps) {
               />
               <Thumbnail product={product} />
               <div className="flex flex-1 flex-col gap-0.5">
-                <span className="text-fg-primary font-body text-sm font-medium">
-                  {product.nameSq}
-                </span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-fg-primary font-body text-sm font-medium">
+                    {product.nameSq}
+                  </span>
+                  <IncompleteTranslationBadge product={product} />
+                </div>
                 <span className="text-fg-secondary font-mono text-xs">
                   {product.categoryName ?? "No category"}
                 </span>
@@ -328,6 +336,23 @@ export function AdminProductList({ products }: AdminProductListProps) {
         ))}
       </div>
     </div>
+  );
+}
+
+function IncompleteTranslationBadge({ product }: { product: AdminProductListItem }) {
+  if (product.incompleteLocales.length === 0) {
+    return null;
+  }
+
+  return (
+    <span
+      className="bg-warning/10 text-warning shrink-0 rounded-sm px-1.5 py-0.5 font-mono text-[10px] leading-none"
+      title={`Incomplete translation: ${product.incompleteLocales
+        .map((locale) => LOCALE_LABEL[locale])
+        .join(", ")}`}
+    >
+      {product.incompleteLocales.map((locale) => LOCALE_LABEL[locale]).join("/")} incomplete
+    </span>
   );
 }
 

@@ -14,7 +14,6 @@
   "nav": {
     "products": "Products",
     "categories": "Categories",
-    "about": "About",
     "contact": "Contact",
     "cart": "Cart",
     "menu": "Menu"
@@ -95,7 +94,8 @@
       "previous": "Previous",
       "next": "Next",
       "pageInfo": "Page {page} of {totalPages}"
-    }
+    },
+    "seeAllResults": "See all results for “{query}”"
   },
   "cart": {
     "title": "Cart",
@@ -181,7 +181,6 @@
     "helpHeading": "Help",
     "contactHeading": "Contact",
     "links": {
-      "about": "About",
       "contact": "Contact",
       "terms": "Terms of service",
       "privacy": "Privacy policy",
@@ -336,5 +335,11 @@
         }
       ]
     }
+  },
+  "contact": {
+    "title": "Contact",
+    "heading": "Find us on Instagram",
+    "description": "For questions about orders, products, or anything else, message us on Instagram — it's the fastest way to reach us.",
+    "cta": "Visit @{handle} on Instagram"
   }
 }

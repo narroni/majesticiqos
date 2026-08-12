@@ -51,12 +51,6 @@ export async function Footer() {
             {t("helpHeading")}
           </h3>
           <Link
-            href="/about"
-            className="text-fg-secondary hover:text-fg-primary text-sm"
-          >
-            {t("links.about")}
-          </Link>
-          <Link
             href="/terms"
             className="text-fg-secondary hover:text-fg-primary text-sm"
           >

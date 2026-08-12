@@ -14,15 +14,6 @@ export type CheckoutCountry = (typeof CHECKOUT_COUNTRIES)[number];
 type PhoneRegion = "XK" | "AL" | "MK";
 const PHONE_REGIONS: readonly PhoneRegion[] = ["XK", "AL", "MK"];
 
-// libphonenumber-js region codes — "OTHER" has no fixed region, so a number
-// there must be a full international number (leading +) it can parse alone.
-const PHONE_REGION: Record<CheckoutCountry, PhoneRegion | undefined> = {
-  XK: "XK",
-  AL: "AL",
-  MK: "MK",
-  OTHER: undefined,
-};
-
 export const PHONE_FORMAT_EXAMPLE: Record<CheckoutCountry, string> = {
   XK: "+383 44 123 456",
   AL: "+355 69 123 4567",
@@ -38,6 +29,10 @@ export const PHONE_FORMAT_EXAMPLE: Record<CheckoutCountry, string> = {
  * two supported regions, then no region at all (a fully-qualified
  * +<calling code> number, valid for literally any country). Accepted if any
  * interpretation parses to a valid number.
+ *
+ * This is used only to *normalise* a number to E.164 for storage when
+ * possible — it is never used to reject a number. A number libphonenumber
+ * doesn't recognise is still accepted; see `isPlausiblePhone` below.
  */
 export function parseCheckoutPhone(phone: string, preferredRegion?: PhoneRegion) {
   const regions = preferredRegion
@@ -53,6 +48,22 @@ export function parseCheckoutPhone(phone: string, preferredRegion?: PhoneRegion)
 
   const parsed = parsePhoneNumberFromString(phone);
   return parsed?.isValid() ? parsed : undefined;
+}
+
+// Loose format check: digits, spaces, dashes, parentheses, optional leading
+// "+". Not a recognised-country check — libphonenumber is only used for
+// best-effort E.164 normalisation, never to reject a number (see
+// `parseCheckoutPhone`).
+const PLAUSIBLE_PHONE_PATTERN = /^\+?[0-9\s\-()]+$/;
+const MIN_PHONE_DIGITS = 6;
+const MAX_PHONE_DIGITS = 20;
+
+export function isPlausiblePhone(phone: string): boolean {
+  if (!PLAUSIBLE_PHONE_PATTERN.test(phone)) {
+    return false;
+  }
+  const digitCount = phone.replace(/\D/g, "").length;
+  return digitCount >= MIN_PHONE_DIGITS && digitCount <= MAX_PHONE_DIGITS;
 }
 
 type ErrorTranslator = (
@@ -73,7 +84,7 @@ export function createCheckoutFormSchema(t: ErrorTranslator) {
         .trim()
         .min(1, t("required"))
         .max(50, t("tooLong", { max: 50 })),
-      phone: z.string().trim().min(1, t("required")).max(20, t("tooLong", { max: 20 })),
+      phone: z.string().trim().min(1, t("required")).max(30, t("tooLong", { max: 30 })),
       email: z
         .email(t("invalidEmail"))
         .optional()
@@ -108,7 +119,7 @@ export function createCheckoutFormSchema(t: ErrorTranslator) {
       honeypot: z.string().max(0).optional().or(z.literal("")),
     })
     .superRefine((data, ctx) => {
-      if (!parseCheckoutPhone(data.phone, PHONE_REGION[data.country])) {
+      if (!isPlausiblePhone(data.phone)) {
         ctx.addIssue({
           code: "custom",
           message: t("invalidPhone"),

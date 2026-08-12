@@ -24,6 +24,64 @@ export interface AdminProductListItem {
   isActive: boolean;
   isFeatured: boolean;
   primaryImageUrl: string | null;
+  /** Locales missing a name/short description/description. Empty when both are complete. */
+  incompleteLocales: ("sq" | "en")[];
+}
+
+interface TranslationCompletenessFields {
+  name: string;
+  short_description: string | null;
+  description: string | null;
+}
+
+// Shared "complete" definition — a translation is only complete once it has
+// a name, short description, and description. Used both to compute a
+// product's per-row warning in the list and to build the overview's
+// translation-completeness widget.
+function isTranslationComplete(translation?: TranslationCompletenessFields): boolean {
+  return Boolean(
+    translation?.name.trim() &&
+      translation.short_description?.trim() &&
+      translation.description?.trim(),
+  );
+}
+
+// Batched lookup of which locale(s) are incomplete per product, keyed by id.
+// A product absent from the map has both locales complete. Optionally
+// scoped to a set of ids so the list page doesn't have to fetch this for
+// every product on every page load.
+async function getIncompleteLocalesByProductId(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  ids?: string[],
+): Promise<Map<string, ("sq" | "en")[]>> {
+  let query = supabase
+    .from("products")
+    .select("id, product_translations(locale, name, short_description, description)")
+    .is("deleted_at", null);
+
+  if (ids) {
+    query = query.in("id", ids);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    throw error;
+  }
+
+  const map = new Map<string, ("sq" | "en")[]>();
+
+  for (const row of data) {
+    const sq = row.product_translations.find((t) => t.locale === "sq");
+    const en = row.product_translations.find((t) => t.locale === "en");
+    const incomplete: ("sq" | "en")[] = [];
+    if (!isTranslationComplete(sq)) incomplete.push("sq");
+    if (!isTranslationComplete(en)) incomplete.push("en");
+    if (incomplete.length > 0) {
+      map.set(row.id, incomplete);
+    }
+  }
+
+  return map;
 }
 
 export interface AdminProductImage {
@@ -150,6 +208,10 @@ export async function getAdminProducts(filters: AdminProductFilters = {}) {
   }
 
   const rows = (data ?? []) as unknown as ListRow[];
+  const incompleteLocalesById = await getIncompleteLocalesByProductId(
+    supabase,
+    rows.map((row) => row.id),
+  );
 
   let items: AdminProductListItem[] = rows.map((row) => {
     const translation = row.product_translations.find((t) => t.locale === "sq");
@@ -171,6 +233,7 @@ export async function getAdminProducts(filters: AdminProductFilters = {}) {
       isActive: row.is_active,
       isFeatured: row.is_featured,
       primaryImageUrl: images[0]?.storage_path ?? null,
+      incompleteLocales: incompleteLocalesById.get(row.id) ?? [],
     };
   });
 
@@ -305,11 +368,12 @@ export async function getAdminCategoryOptions(): Promise<AdminCategoryOption[]> 
 }
 
 /**
- * The activation rule (BLUEPRINT §6.2): a product can't be set is_active
- * unless it has at least one image AND complete name/short/long description
- * translations in both locales. Re-checked here against live DB state for
- * the list page's inline toggle (which doesn't carry full translation
- * content the way the save-product form does).
+ * The activation rule (BLUEPRINT §6.2, relaxed): a product can't be set
+ * is_active unless it has at least one image. Translation completeness is
+ * no longer a hard block — it's surfaced as a warning instead (see
+ * `getIncompleteTranslationProductIds`). Re-checked here against live DB
+ * state for the list page's inline toggle (which doesn't carry full
+ * translation content the way the save-product form does).
  */
 export async function isProductReadyForActive(id: string): Promise<boolean> {
   const product = await getAdminProductById(id);
@@ -317,52 +381,16 @@ export async function isProductReadyForActive(id: string): Promise<boolean> {
     return false;
   }
 
-  const requiredText = [
-    product.nameSq,
-    product.shortDescriptionSq,
-    product.descriptionSq,
-    product.nameEn,
-    product.shortDescriptionEn,
-    product.descriptionEn,
-  ];
-
-  return product.images.length > 0 && requiredText.every((value) => value.trim().length > 0);
+  return product.images.length > 0;
 }
 
 // The overview's translation-completeness widget (BLUEPRINT §6.4) links
-// here — same "complete" definition as isProductReadyForActive's activation
-// rule, just batched across every non-deleted product instead of one.
+// here — same "complete" definition used by the list page's per-row
+// warning, just batched across every non-deleted product instead of one.
 export async function getIncompleteTranslationProductIds(): Promise<string[]> {
   const supabase = await createClient();
-
-  const { data, error } = await supabase
-    .from("products")
-    .select("id, product_translations(locale, name, short_description, description)")
-    .is("deleted_at", null);
-
-  if (error) {
-    throw error;
-  }
-
-  function isComplete(translation?: {
-    name: string;
-    short_description: string | null;
-    description: string | null;
-  }) {
-    return Boolean(
-      translation?.name.trim() &&
-        translation.short_description?.trim() &&
-        translation.description?.trim(),
-    );
-  }
-
-  return data
-    .filter((row) => {
-      const sq = row.product_translations.find((t) => t.locale === "sq");
-      const en = row.product_translations.find((t) => t.locale === "en");
-      return !isComplete(sq) || !isComplete(en);
-    })
-    .map((row) => row.id);
+  const incompleteLocalesById = await getIncompleteLocalesByProductId(supabase);
+  return [...incompleteLocalesById.keys()];
 }
 
 export async function isSlugTaken(slug: string, excludeId?: string): Promise<boolean> {

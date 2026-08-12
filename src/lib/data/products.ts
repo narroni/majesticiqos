@@ -282,6 +282,78 @@ export async function getProducts({
   };
 }
 
+export interface ProductSearchHit {
+  id: string;
+  slug: string;
+  name: string;
+  priceCents: number;
+  discountPriceCents: number | null;
+  effectivePriceCents: number;
+  imageUrl: string | null;
+}
+
+const SEARCH_HIT_LIMIT = 6;
+
+const SEARCH_HIT_COLUMNS = `
+  id,
+  slug,
+  price_cents,
+  discount_price_cents,
+  effective_price_cents,
+  product_translations!inner(name),
+  product_images(storage_path, sort_order)
+`;
+
+interface SearchHitRow {
+  id: string;
+  slug: string;
+  price_cents: number;
+  discount_price_cents: number | null;
+  effective_price_cents: number;
+  product_translations: { name: string }[];
+  product_images: { storage_path: string; sort_order: number }[];
+}
+
+// Powers the header's live search overlay — a handful of matches as the
+// customer types, same diacritic-insensitive matching as getProducts'
+// `search` filter. Deliberately not cached (revalidate: 0): a per-keystroke
+// query has no reuse value the way a listing page's does, and a stale hit
+// here would point at a product that just went inactive.
+export async function searchProductsLite(
+  query: string,
+  locale: Locale,
+): Promise<ProductSearchHit[]> {
+  const normalized = normalizeForSearch(query);
+  if (!normalized) {
+    return [];
+  }
+
+  const supabase = createPublicClient({ revalidate: 0 });
+
+  const { data, error } = await activeProductsQuery(supabase, SEARCH_HIT_COLUMNS)
+    .eq("product_translations.locale", locale)
+    .ilike("product_translations.name_unaccented", `%${normalized}%`)
+    .order("sort_order", { referencedTable: "product_images", ascending: true })
+    .limit(SEARCH_HIT_LIMIT);
+
+  if (error) {
+    throw error;
+  }
+
+  return ((data ?? []) as unknown as SearchHitRow[]).map((row) => {
+    const images = [...row.product_images].sort((a, b) => a.sort_order - b.sort_order);
+    return {
+      id: row.id,
+      slug: row.slug,
+      name: row.product_translations[0]?.name ?? "",
+      priceCents: row.price_cents,
+      discountPriceCents: row.discount_price_cents,
+      effectivePriceCents: row.effective_price_cents,
+      imageUrl: images[0]?.storage_path ?? null,
+    };
+  });
+}
+
 // BLUEPRINT §1.2 — Product detail: revalidate 300, tag `product:{id}`.
 // Tagged by slug rather than id: the id isn't known until after this query
 // resolves, and slugs are stable (products don't have a rename flow), so

@@ -14,7 +14,6 @@
   "nav": {
     "products": "Produktet",
     "categories": "Kategoritë",
-    "about": "Rreth nesh",
     "contact": "Kontakt",
     "cart": "Shporta",
     "menu": "Menu"
@@ -95,7 +94,8 @@
       "previous": "Mbrapa",
       "next": "Përpara",
       "pageInfo": "Faqja {page} nga {totalPages}"
-    }
+    },
+    "seeAllResults": "Shiko të gjitha rezultatet për “{query}”"
   },
   "cart": {
     "title": "Shporta",
@@ -181,7 +181,6 @@
     "helpHeading": "Ndihmë",
     "contactHeading": "Kontakt",
     "links": {
-      "about": "Rreth nesh",
       "contact": "Kontakt",
       "terms": "Kushtet e përdorimit",
       "privacy": "Politika e privatësisë",
@@ -336,5 +335,11 @@
         }
       ]
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "heading": "Na gjeni në Instagram",
+    "description": "Për pyetje rreth porosive, produkteve, ose çdo gjë tjetër, na shkruani në Instagram — është mënyra më e shpejtë për të na kontaktuar.",
+    "cta": "Vizito @{handle} në Instagram"
   }
 }

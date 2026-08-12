@@ -1,9 +1,10 @@
 -- Demo catalog seed — 12 realistic heated-tobacco accessories across the six
 -- categories already seeded by seed.sql. Paste into the SQL editor.
 --
--- Placeholder imagery only: storage_path holds a picsum.photos URL for now
--- instead of a real "products/{id}/{file}" storage path. Swap these for real
--- uploaded photos once photography exists — see BLUEPRINT §2.8.
+-- No product_images rows here on purpose: images must be real files uploaded
+-- to Supabase Storage (storage_path is a "products/{id}/{file}" path, see
+-- BLUEPRINT §2.8), not a placeholder URL. Upload photos for these products
+-- through /admin/products after seeding.
 
 insert into products (slug, category_id, price_cents, discount_price_cents, stock_quantity, is_featured)
 select v.slug, c.id, v.price_cents, v.discount_price_cents, v.stock_quantity, v.is_featured
@@ -58,9 +59,3 @@ join (values
   ('magnetic-car-holder', 'Magnetic Car Holder', 'Stays put, even on turns.', 'A magnetic holder that mounts easily in your car and keeps your device steady on the road.'),
   ('rotating-desk-stand', 'Rotating Desk Stand', 'The perfect angle, always on your desk.', 'A desk stand with a rotating base, letting you find the right angle for use at home or in the office.')
 ) as v (slug, name, short_description, description) on v.slug = p.slug;
-
-insert into product_images (product_id, storage_path, alt_sq, alt_en, sort_order, width, height)
-select p.id, 'https://picsum.photos/seed/' || p.slug || '/800/1000', t_sq.name, t_en.name, 0, 800, 1000
-from products p
-join product_translations t_sq on t_sq.product_id = p.id and t_sq.locale = 'sq'
-join product_translations t_en on t_en.product_id = p.id and t_en.locale = 'en';

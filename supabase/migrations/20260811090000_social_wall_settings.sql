@@ -6,7 +6,7 @@
 -- All nullable/defaulted: the storefront falls back to the message-file
 -- defaults for text (messages/sq.json, messages/en.json `home.socialWall`)
 -- and hides the section entirely when social_images is empty, rather than
--- showing the previous hardcoded picsum placeholders
+-- showing the previous hardcoded placeholder images
 -- (src/lib/data/settings.ts, src/components/home/social-wall.tsx).
 --
 -- social_follow_url_sq/en are plain text, not validated as URLs at the

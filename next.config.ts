@@ -35,7 +35,7 @@ const cspDirectives = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: https://picsum.photos${supabaseHostname ? ` https://${supabaseHostname}` : ""}`,
+  `img-src 'self' data:${supabaseHostname ? ` https://${supabaseHostname}` : ""}`,
   "font-src 'self'",
   "connect-src 'self' https://vitals.vercel-insights.com",
   "object-src 'none'",
@@ -67,12 +67,6 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-        // Demo-catalog placeholder images only — see supabase/seed-products.sql.
-        // Remove once real product photography is uploaded to Supabase Storage.
-      },
       ...(supabaseHostname
         ? [
             {

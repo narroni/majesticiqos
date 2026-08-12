@@ -13,16 +13,22 @@ import { Redis } from "@upstash/redis";
 // still throws at request time (Redis down/unreachable) as a separate,
 // deliberate failure mode — see each caller's own fail-open/fail-closed
 // reasoning.
-const url = process.env.UPSTASH_REDIS_REST_URL;
-const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+//
+// Two naming schemes, same database: UPSTASH_REDIS_REST_URL/TOKEN is what
+// you get creating a database directly on Upstash; KV_REST_API_URL/TOKEN is
+// what Vercel's Upstash Marketplace integration injects instead (a legacy
+// name carried over from the old Vercel KV product). Prefer the UPSTASH_
+// names when both are somehow set.
+const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 export const redis = url && token ? new Redis({ url, token }) : null;
 
 if (!redis) {
   const message =
-    "[redis] UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN are not set. " +
-    "Falling back to in-memory rate limiting and idempotency caching. This is " +
-    "fine for local development, but MUST NOT happen in production: in-memory " +
+    "[redis] Neither UPSTASH_REDIS_REST_URL/TOKEN nor KV_REST_API_URL/TOKEN are " +
+    "set. Falling back to in-memory rate limiting and idempotency caching. This " +
+    "is fine for local development, but MUST NOT happen in production: in-memory " +
     "state resets on every deploy/restart and is not shared across serverless " +
     "instances, so spam protection and double-submit protection are effectively " +
     "disabled. See README/deployment notes for Upstash setup.";

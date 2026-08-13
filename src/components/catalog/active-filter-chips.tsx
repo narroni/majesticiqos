@@ -74,7 +74,11 @@ export function ActiveFilterChips({
           key={chip.key}
           type="button"
           onClick={() => remove(chip.key)}
-          className="bg-bg-subtle text-fg-secondary hover:text-fg-primary flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-xs"
+          // These wrap freely (flex-wrap) with only gap-2 between them, so
+          // an invisible expanded hit area risks overlapping a neighbouring
+          // chip — growing the real, visible pill on touch (min-h-11) is
+          // the safer fix here; the wrap layout absorbs the extra height.
+          className="bg-bg-subtle text-fg-secondary hover:text-fg-primary flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-xs pointer-coarse:min-h-11 pointer-coarse:px-3"
         >
           {chip.label}
           <X className="size-3" aria-hidden="true" />
@@ -83,7 +87,7 @@ export function ActiveFilterChips({
       <button
         type="button"
         onClick={() => router.replace(pathname)}
-        className="text-fg-muted hover:text-fg-primary text-xs underline"
+        className="text-fg-muted hover:text-fg-primary text-xs underline pointer-coarse:-mx-3 pointer-coarse:-my-3 pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center pointer-coarse:justify-center pointer-coarse:rounded-sm pointer-coarse:px-3 pointer-coarse:py-3"
       >
         {t("clearFilters")}
       </button>

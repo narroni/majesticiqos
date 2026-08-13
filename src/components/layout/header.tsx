@@ -11,6 +11,7 @@ import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/config/site";
 import { Link } from "@/i18n/navigation";
 import { getCartItemCount, useCartStore } from "@/lib/stores/cart-store";
+import { EXPANDED_TAP_TARGET } from "@/lib/tap-target";
 import { cx } from "@/lib/utils";
 
 const SCROLL_THRESHOLD = 40;
@@ -86,12 +87,16 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        {/* pointer-coarse:gap-6: each icon's expanded 44px tap area (see
+            EXPANDED_TAP_TARGET) extends 12px past its own edge — gap-4 (16px)
+            alone would let two neighbouring hit areas overlap by 8px, so this
+            widens the gap on touch just enough to keep them from touching. */}
+        <div className="flex items-center gap-4 pointer-coarse:gap-6">
           <button
             type="button"
             aria-label={tCommon("search")}
             onClick={() => setActiveOverlay("search")}
-            className="text-fg-secondary hover:text-fg-primary"
+            className={cx("text-fg-secondary hover:text-fg-primary", EXPANDED_TAP_TARGET)}
           >
             <Search className="size-5" aria-hidden="true" />
           </button>
@@ -105,7 +110,7 @@ export function Header() {
           <Link
             href="/cart"
             aria-label={t("cart")}
-            className="text-fg-secondary hover:text-fg-primary relative"
+            className={cx("text-fg-secondary hover:text-fg-primary relative", EXPANDED_TAP_TARGET)}
           >
             <ShoppingBag className="size-5" aria-hidden="true" />
             {hasHydrated && cartCount > 0 && (
@@ -119,7 +124,7 @@ export function Header() {
             type="button"
             aria-label={t("menu")}
             onClick={() => setActiveOverlay("menu")}
-            className="text-fg-secondary hover:text-fg-primary lg:hidden"
+            className={cx("text-fg-secondary hover:text-fg-primary lg:hidden", EXPANDED_TAP_TARGET)}
           >
             <Menu className="size-5" aria-hidden="true" />
           </button>
@@ -138,7 +143,7 @@ export function Header() {
               type="button"
               aria-label={tCommon("close")}
               onClick={() => setActiveOverlay(null)}
-              className="text-fg-secondary hover:text-fg-primary"
+              className={cx("text-fg-secondary hover:text-fg-primary", EXPANDED_TAP_TARGET)}
             >
               <X className="size-6" aria-hidden="true" />
             </button>

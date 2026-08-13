@@ -94,7 +94,14 @@ export function CartLineItem({ item, locale, reconciliation }: CartLineItemProps
           <button
             type="button"
             onClick={() => removeItem(item.productId)}
-            className="text-fg-muted hover:text-danger font-body text-xs underline"
+            // Real padding on touch devices only (mobile audit: 52x15px is
+            // far under the 44px minimum) — negative margin cancels the
+            // padding's effect on the row's layout, so "Remove" doesn't
+            // visually shift or push the stepper further left, it just
+            // gains a bigger, invisible-until-tapped touch target around
+            // the same text. Desktop keeps the current compact underlined
+            // link untouched (pointer: fine is precise enough as-is).
+            className="text-fg-muted hover:text-danger font-body text-xs underline pointer-coarse:-mx-3 pointer-coarse:-my-3 pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center pointer-coarse:justify-center pointer-coarse:rounded-sm pointer-coarse:px-3 pointer-coarse:py-3"
           >
             {t("remove")}
           </button>

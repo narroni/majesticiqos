@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { EXPANDED_TAP_TARGET } from "@/lib/tap-target";
 
 interface PaginationProps {
   page: number;
@@ -40,6 +41,7 @@ export async function Pagination({
         aria-disabled={isFirstPage}
         className={cn(
           "text-fg-secondary hover:text-fg-primary text-sm",
+          EXPANDED_TAP_TARGET,
           isFirstPage && "pointer-events-none opacity-40",
         )}
       >
@@ -53,6 +55,7 @@ export async function Pagination({
         aria-disabled={isLastPage}
         className={cn(
           "text-fg-secondary hover:text-fg-primary text-sm",
+          EXPANDED_TAP_TARGET,
           isLastPage && "pointer-events-none opacity-40",
         )}
       >

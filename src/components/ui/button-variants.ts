@@ -4,8 +4,29 @@ import { cva } from "class-variance-authority";
 // visual styling (no Base UI Button semantics — see the Hero CTAs,
 // add-to-cart, and quantity stepper) can use these classes without pulling
 // in @base-ui/react/button and its @floating-ui dependency at all.
+//
+// Touch target: every size below is visually sized for a mouse-precision
+// desktop layout, several well under the 44x44px minimum a finger needs
+// (mobile audit finding). Rather than growing the visible box on touch
+// devices — which would make small icon buttons look bloated relative to
+// their icon — `pointer-coarse:before:*` gives every button an invisible,
+// centered 44x44px hit area on touch (`(pointer: coarse)`) only, via a
+// ::before pseudo-element with no visible fill. Desktop (`pointer: fine`)
+// is completely unaffected: no extra markup, no layout shift, same visual
+// size as before.
+//
+// `relative` (not `pointer-coarse:relative`) is deliberate: the ::before
+// needs *some* positioned ancestor to center against, but plain `relative`
+// with no offsets is visually a no-op on every pointer type, so it's safe
+// to apply unconditionally. That matters because a few callers (e.g.
+// SheetContent's close button) pass their own `absolute` via `className` —
+// tailwind-merge correctly drops this base `relative` in favour of an
+// unscoped `absolute` override, but it can't do that for a scoped
+// `pointer-coarse:relative` fighting an unscoped `absolute`, which would
+// otherwise win the cascade under `(pointer: coarse)` and silently break
+// that button's positioning on touch.
 export const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-sm border border-transparent bg-clip-padding font-body text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button relative inline-flex shrink-0 items-center justify-center rounded-sm border border-transparent bg-clip-padding font-body text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 pointer-coarse:before:absolute pointer-coarse:before:inset-1/2 pointer-coarse:before:size-11 pointer-coarse:before:-translate-x-1/2 pointer-coarse:before:-translate-y-1/2 pointer-coarse:before:content-['']",
   {
     variants: {
       variant: {

@@ -10,6 +10,7 @@ import { siteConfig } from "@/config/site";
 import { Link, useRouter } from "@/i18n/navigation";
 import { searchProductsAction } from "@/lib/actions/search";
 import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
+import { EXPANDED_TAP_TARGET } from "@/lib/tap-target";
 import { formatPrice } from "@/lib/utils";
 import type { Locale } from "@/types";
 import type { ProductSearchHit } from "@/lib/data/products";
@@ -90,7 +91,7 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
           type="button"
           aria-label={tCommon("close")}
           onClick={onClose}
-          className="text-fg-secondary hover:text-fg-primary"
+          className={`text-fg-secondary hover:text-fg-primary ${EXPANDED_TAP_TARGET}`}
         >
           <X className="size-6" aria-hidden="true" />
         </button>

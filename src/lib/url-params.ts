@@ -14,7 +14,10 @@ function isSortOption(value: unknown): value is SortOption {
   );
 }
 
-function firstValue(value: string | string[] | undefined): string | undefined {
+/** Next.js searchParams values are `string | string[] | undefined` when a
+ * query key repeats — this is the shared helper for "just give me the
+ * first/only one," used by every page that reads searchParams directly. */
+export function firstValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 

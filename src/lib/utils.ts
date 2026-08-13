@@ -71,6 +71,19 @@ export function formatRelativeTime(dateIso: string, locale = "en"): string {
   return rtf.format(diffSeconds, "second");
 }
 
+/**
+ * Admin-only absolute timestamp (English locale, admin has no i18n — see
+ * CLAUDE.md). Used for order timelines/detail views where a relative time
+ * would be ambiguous once it's more than a day or two old.
+ *
+ * formatAdminDateTime("2026-08-13T14:05:00Z") -> "Aug 13, 2026, 2:05 PM"
+ * formatAdminDateTime(null)                   -> "—"
+ */
+export function formatAdminDateTime(dateIso: string | null): string {
+  if (!dateIso) return "—";
+  return new Date(dateIso).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" });
+}
+
 export function setCookie(name: string, value: string, maxAgeSeconds: number) {
   document.cookie = `${name}=${value};max-age=${maxAgeSeconds};path=/`;
 }

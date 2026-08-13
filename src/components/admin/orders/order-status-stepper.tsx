@@ -1,14 +1,10 @@
 import type { AdminOrderDetail } from "@/lib/data/admin-orders";
 import { STATUS_LABEL } from "@/lib/order-status";
 import { cn } from "@/lib/cn";
+import { formatAdminDateTime } from "@/lib/utils";
 import type { OrderStatus } from "@/types";
 
 const STEP_ORDER: OrderStatus[] = ["pending", "confirmed", "preparing", "shipped", "completed"];
-
-function formatTimestamp(value: string | null): string {
-  if (!value) return "—";
-  return new Date(value).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" });
-}
 
 export function OrderStatusStepper({ order }: { order: AdminOrderDetail }) {
   if (order.status === "cancelled") {
@@ -16,7 +12,7 @@ export function OrderStatusStepper({ order }: { order: AdminOrderDetail }) {
       <div className="border-danger/40 bg-danger/10 flex items-center gap-2 rounded-md border px-4 py-3">
         <span className="bg-danger size-2.5 shrink-0 rounded-full" />
         <span className="text-danger font-mono text-sm">
-          Cancelled — {formatTimestamp(order.cancelledAt)}
+          Cancelled — {formatAdminDateTime(order.cancelledAt)}
         </span>
       </div>
     );
@@ -57,7 +53,7 @@ export function OrderStatusStepper({ order }: { order: AdminOrderDetail }) {
                 {STATUS_LABEL[step]}
               </span>
               <span className="text-fg-muted font-mono text-[11px]">
-                {formatTimestamp(timestamps[step])}
+                {formatAdminDateTime(timestamps[step])}
               </span>
             </div>
             {index < STEP_ORDER.length - 1 ? (

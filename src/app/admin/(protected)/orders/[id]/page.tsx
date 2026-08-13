@@ -7,7 +7,7 @@ import { OrderStatusChanger } from "@/components/admin/orders/order-status-chang
 import { OrderStatusStepper } from "@/components/admin/orders/order-status-stepper";
 import { COUNTRY_LABEL } from "@/lib/country-labels";
 import { getAdminOrderById } from "@/lib/data/admin-orders";
-import { formatPrice } from "@/lib/utils";
+import { formatAdminDateTime, formatPrice } from "@/lib/utils";
 import type { Locale } from "@/types";
 
 const LOCALE_LABEL: Record<Locale, string> = {
@@ -37,7 +37,7 @@ export default async function AdminOrderDetailPage({ params }: AdminOrderDetailP
         <div className="flex flex-col gap-1">
           <h1 className="text-h2 font-display text-fg-primary">{order.orderNumber}</h1>
           <span className="text-fg-muted font-mono text-xs">
-            Placed {new Date(order.createdAt).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}
+            Placed {formatAdminDateTime(order.createdAt)}
           </span>
         </div>
         <OrderStatusChanger orderId={order.id} orderNumber={order.orderNumber} status={order.status} />

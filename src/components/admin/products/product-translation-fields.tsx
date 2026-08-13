@@ -16,11 +16,13 @@ import type { AdminProductValues } from "@/lib/validation/admin-product";
 
 interface ProductTranslationFieldsProps {
   locale: "sq" | "en";
+  /** Only meaningful for locale="sq" — drives ProductForm's auto-slug. */
+  onNameChange?: (value: string) => void;
 }
 
 const SUFFIX = { sq: "Sq", en: "En" } as const;
 
-export function ProductTranslationFields({ locale }: ProductTranslationFieldsProps) {
+export function ProductTranslationFields({ locale, onNameChange }: ProductTranslationFieldsProps) {
   const form = useFormContext<AdminProductValues>();
   const suffix = SUFFIX[locale];
 
@@ -51,7 +53,13 @@ export function ProductTranslationFields({ locale }: ProductTranslationFieldsPro
           <FormItem>
             <FormLabel>Name {locale === "sq" ? "(required)" : ""}</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input
+                {...field}
+                onChange={(event) => {
+                  field.onChange(event);
+                  onNameChange?.(event.target.value);
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

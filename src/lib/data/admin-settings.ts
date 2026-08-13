@@ -1,21 +1,8 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
-import type { HeroImage, SocialImage, StoreSettings } from "@/lib/data/settings";
+import type { HeroImage, SocialImage, SocialWallColumns, StoreSettings } from "@/lib/data/settings";
 import type { AdminRole, CountryCode } from "@/types";
-import type { Json } from "@/types/database";
-
-// See src/lib/data/settings.ts's SocialWallColumns comment — same bridge,
-// same migration, same "shrinks to nothing once db:types catches up."
-interface SocialWallColumns {
-  social_heading_sq: string | null;
-  social_heading_en: string | null;
-  social_handle_text_sq: string | null;
-  social_handle_text_en: string | null;
-  social_follow_url_sq: string | null;
-  social_follow_url_en: string | null;
-  social_images: Json;
-}
 
 export async function getAdminStoreSettings(): Promise<StoreSettings> {
   const supabase = await createClient();

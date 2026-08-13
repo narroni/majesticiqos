@@ -42,6 +42,7 @@ import {
 } from "@/lib/actions/admin-products";
 import type { AdminProductListItem } from "@/lib/data/admin-products";
 import { cn } from "@/lib/cn";
+import { STOCK_STATUS_LABEL } from "@/lib/stock-status";
 import { formatPrice } from "@/lib/utils";
 
 interface AdminProductListProps {
@@ -49,12 +50,6 @@ interface AdminProductListProps {
 }
 
 type ToggleOverrides = Record<string, Partial<Pick<AdminProductListItem, "isActive" | "isFeatured">>>;
-
-const STOCK_LABEL: Record<AdminProductListItem["stockStatus"], string> = {
-  in_stock: "In stock",
-  low_stock: "Low stock",
-  out_of_stock: "Out of stock",
-};
 
 const STOCK_CLASS: Record<AdminProductListItem["stockStatus"], string> = {
   in_stock: "text-success",
@@ -388,7 +383,7 @@ function Price({ product }: { product: AdminProductListItem }) {
 function Stock({ product }: { product: AdminProductListItem }) {
   return (
     <span className={cn("font-mono text-xs", STOCK_CLASS[product.stockStatus])}>
-      {product.stockQuantity} · {STOCK_LABEL[product.stockStatus]}
+      {product.stockQuantity} · {STOCK_STATUS_LABEL[product.stockStatus]}
     </span>
   );
 }

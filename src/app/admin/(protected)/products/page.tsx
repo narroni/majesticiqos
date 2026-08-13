@@ -10,11 +10,8 @@ import {
   getAdminProducts,
   getIncompleteTranslationProductIds,
 } from "@/lib/data/admin-products";
+import { firstValue } from "@/lib/url-params";
 import type { StockStatus } from "@/types";
-
-function firstValue(value: string | string[] | undefined): string | undefined {
-  return Array.isArray(value) ? value[0] : value;
-}
 
 interface AdminProductsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

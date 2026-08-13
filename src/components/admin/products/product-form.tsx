@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -31,7 +31,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkSlugAvailability, saveProduct } from "@/lib/actions/admin-products";
 import type { AdminCategoryOption } from "@/lib/data/admin-products";
-import { slugify } from "@/lib/utils";
+import { useAutoSlug } from "@/lib/hooks/use-auto-slug";
+import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import {
   adminProductSchema,
   getIncompleteLocales,
@@ -53,7 +54,6 @@ type SlugStatus = "idle" | "checking" | "available" | "taken";
 
 export function ProductForm({ mode, defaultValues, categories }: ProductFormProps) {
   const router = useRouter();
-  const slugTouchedRef = useRef(mode === "edit");
   const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
 
   const form = useForm<AdminProductValues>({
@@ -61,7 +61,6 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
     defaultValues,
   });
 
-  const nameSq = useWatch({ control: form.control, name: "nameSq" });
   const slug = useWatch({ control: form.control, name: "slug" });
   const watchedValues = useWatch({ control: form.control });
   const incompleteLocales = getIncompleteLocales({
@@ -83,23 +82,21 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
 
   // Auto-generate the slug from the Albanian name until the admin edits it
   // by hand — edit mode never auto-updates an existing product's slug.
-  useEffect(() => {
-    if (mode !== "create" || slugTouchedRef.current) return;
-    form.setValue("slug", slugify(nameSq), { shouldValidate: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nameSq, mode]);
+  const { handleNameChange, markSlugTouched } = useAutoSlug({
+    mode,
+    onSlugChange: (nextSlug) => form.setValue("slug", nextSlug, { shouldValidate: false }),
+  });
+
+  const debouncedCheckSlug = useDebouncedCallback((value: string) => {
+    setSlugStatus("checking");
+    checkSlugAvailability(value, mode === "edit" ? defaultValues.id : undefined).then((available) =>
+      setSlugStatus(available ? "available" : "taken"),
+    );
+  }, SLUG_CHECK_DEBOUNCE_MS);
 
   useEffect(() => {
     if (!slug) return;
-
-    const timeoutId = setTimeout(() => {
-      setSlugStatus("checking");
-      checkSlugAvailability(slug, mode === "edit" ? defaultValues.id : undefined).then(
-        (available) => setSlugStatus(available ? "available" : "taken"),
-      );
-    }, SLUG_CHECK_DEBOUNCE_MS);
-
-    return () => clearTimeout(timeoutId);
+    debouncedCheckSlug(slug);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
@@ -136,7 +133,7 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
           </TabsList>
 
           <TabsContent value="albanian" className="pt-4">
-            <ProductTranslationFields locale="sq" />
+            <ProductTranslationFields locale="sq" onNameChange={handleNameChange} />
           </TabsContent>
 
           <TabsContent value="english" className="pt-4">
@@ -267,7 +264,7 @@ export function ProductForm({ mode, defaultValues, categories }: ProductFormProp
                       <Input
                         {...field}
                         onChange={(event) => {
-                          slugTouchedRef.current = true;
+                          markSlugTouched();
                           field.onChange(event.target.value);
                         }}
                       />

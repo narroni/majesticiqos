@@ -45,7 +45,9 @@ export interface StoreSettings {
 // same reasoning as the now-resolved hero_* bridge this file used to carry.
 // An intersection with the real (generated) row type rather than a full
 // duplicate, so this shrinks to nothing extra once the types catch up.
-interface SocialWallColumns {
+// Exported so admin-settings.ts's getAdminStoreSettings can reuse it rather
+// than redeclaring the same bridge a second time.
+export interface SocialWallColumns {
   social_heading_sq: string | null;
   social_heading_en: string | null;
   social_handle_text_sq: string | null;

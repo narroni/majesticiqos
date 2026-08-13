@@ -26,13 +26,18 @@ export async function reconcileCart({
   productIds,
   locale,
 }: ReconcileCartInput): Promise<Record<string, ProductCardData>> {
-  const parsed = reconcileCartSchema.parse({ productIds, locale });
+  const parsed = reconcileCartSchema.safeParse({ productIds, locale });
 
-  if (parsed.productIds.length === 0) {
+  // Invalid input (malformed client-side cart state) is treated the same as
+  // "nothing to reconcile" — an empty map — same as every product in it
+  // being missing from the DB: the caller's reconcileCartItem already
+  // treats a missing product as "no longer available," a safe fallback
+  // either way.
+  if (!parsed.success || parsed.data.productIds.length === 0) {
     return {};
   }
 
-  const products = await getProductsByIds(parsed.productIds, parsed.locale);
+  const products = await getProductsByIds(parsed.data.productIds, parsed.data.locale);
 
   return Object.fromEntries(products.map((product) => [product.id, product]));
 }

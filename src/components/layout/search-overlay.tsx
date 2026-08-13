@@ -9,6 +9,7 @@ import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/config/site";
 import { Link, useRouter } from "@/i18n/navigation";
 import { searchProductsAction } from "@/lib/actions/search";
+import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import { formatPrice } from "@/lib/utils";
 import type { Locale } from "@/types";
 import type { ProductSearchHit } from "@/lib/data/products";
@@ -36,6 +37,21 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
     searchInputRef.current?.focus();
   }, []);
 
+  const debouncedSearch = useDebouncedCallback(
+    (trimmed: string, searchLocale: Locale, requestId: number) => {
+      setIsLoading(true);
+      searchProductsAction(trimmed, searchLocale).then((hits) => {
+        // A later keystroke may have started a newer request while this one
+        // was in flight — ignore this response if it's no longer current.
+        if (requestIdRef.current !== requestId) return;
+        setResults(hits);
+        setIsLoading(false);
+        setHasSearched(true);
+      });
+    },
+    DEBOUNCE_MS,
+  );
+
   useEffect(() => {
     const trimmed = searchValue.trim();
     const requestId = ++requestIdRef.current;
@@ -48,20 +64,8 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
       return;
     }
 
-    const timeoutId = setTimeout(() => {
-      setIsLoading(true);
-      searchProductsAction(trimmed, locale).then((hits) => {
-        // A later keystroke may have started a newer request while this one
-        // was in flight — ignore this response if it's no longer current.
-        if (requestIdRef.current !== requestId) return;
-        setResults(hits);
-        setIsLoading(false);
-        setHasSearched(true);
-      });
-    }, DEBOUNCE_MS);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchValue, locale]);
+    debouncedSearch(trimmed, locale, requestId);
+  }, [searchValue, locale, debouncedSearch]);
 
   function handleSearchSubmit(event: FormEvent) {
     event.preventDefault();

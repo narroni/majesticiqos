@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -21,7 +21,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { checkCategorySlugAvailability, saveCategory } from "@/lib/actions/admin-categories";
-import { slugify } from "@/lib/utils";
+import { useAutoSlug } from "@/lib/hooks/use-auto-slug";
+import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import { adminCategorySchema, type AdminCategoryValues } from "@/lib/validation/admin-category";
 
 const SLUG_CHECK_DEBOUNCE_MS = 500;
@@ -35,7 +36,6 @@ type SlugStatus = "idle" | "checking" | "available" | "taken";
 
 export function CategoryForm({ mode, defaultValues }: CategoryFormProps) {
   const router = useRouter();
-  const slugTouchedRef = useRef(mode === "edit");
   const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
 
   const form = useForm<AdminCategoryValues>({
@@ -43,28 +43,25 @@ export function CategoryForm({ mode, defaultValues }: CategoryFormProps) {
     defaultValues,
   });
 
-  const nameSq = useWatch({ control: form.control, name: "nameSq" });
   const slug = useWatch({ control: form.control, name: "slug" });
 
   // Auto-generate the slug from the Albanian name until the admin edits it
   // by hand — same as ProductForm, edit mode never auto-updates the slug.
-  useEffect(() => {
-    if (mode !== "create" || slugTouchedRef.current) return;
-    form.setValue("slug", slugify(nameSq), { shouldValidate: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nameSq, mode]);
+  const { handleNameChange, markSlugTouched } = useAutoSlug({
+    mode,
+    onSlugChange: (nextSlug) => form.setValue("slug", nextSlug, { shouldValidate: false }),
+  });
+
+  const debouncedCheckSlug = useDebouncedCallback((value: string) => {
+    setSlugStatus("checking");
+    checkCategorySlugAvailability(value, mode === "edit" ? defaultValues.id : undefined).then(
+      (available) => setSlugStatus(available ? "available" : "taken"),
+    );
+  }, SLUG_CHECK_DEBOUNCE_MS);
 
   useEffect(() => {
     if (!slug) return;
-
-    const timeoutId = setTimeout(() => {
-      setSlugStatus("checking");
-      checkCategorySlugAvailability(slug, mode === "edit" ? defaultValues.id : undefined).then(
-        (available) => setSlugStatus(available ? "available" : "taken"),
-      );
-    }, SLUG_CHECK_DEBOUNCE_MS);
-
-    return () => clearTimeout(timeoutId);
+    debouncedCheckSlug(slug);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
@@ -101,7 +98,13 @@ export function CategoryForm({ mode, defaultValues }: CategoryFormProps) {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      onChange={(event) => {
+                        field.onChange(event);
+                        handleNameChange(event.target.value);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -164,7 +167,7 @@ export function CategoryForm({ mode, defaultValues }: CategoryFormProps) {
                   <Input
                     {...field}
                     onChange={(event) => {
-                      slugTouchedRef.current = true;
+                      markSlugTouched();
                       field.onChange(event.target.value);
                     }}
                   />

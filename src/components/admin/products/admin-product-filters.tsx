@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -13,6 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { AdminCategoryOption } from "@/lib/data/admin-products";
+import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
+import { STOCK_STATUS_LABEL } from "@/lib/stock-status";
 import { buildFilterQueryString } from "@/lib/url-params";
 
 const SEARCH_DEBOUNCE_MS = 400;
@@ -27,19 +29,19 @@ export function AdminProductFilters({ categories }: AdminProductFiltersProps) {
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function navigate(patch: Record<string, string | undefined>) {
     const query = buildFilterQueryString(searchParams, patch);
     router.replace(query ? `${pathname}?${query}` : pathname);
   }
 
+  const debouncedNavigate = useDebouncedCallback((value: string) => {
+    navigate({ search: value || undefined });
+  }, SEARCH_DEBOUNCE_MS);
+
   function handleSearchChange(value: string) {
     setSearch(value);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      navigate({ search: value || undefined });
-    }, SEARCH_DEBOUNCE_MS);
+    debouncedNavigate(value);
   }
 
   // Base UI's <Select.Value> resolves the trigger's displayed label from
@@ -51,9 +53,7 @@ export function AdminProductFilters({ categories }: AdminProductFiltersProps) {
   };
   const stockItems = {
     all: "All stock levels",
-    in_stock: "In stock",
-    low_stock: "Low stock",
-    out_of_stock: "Out of stock",
+    ...STOCK_STATUS_LABEL,
   };
 
   return (
@@ -96,9 +96,11 @@ export function AdminProductFilters({ categories }: AdminProductFiltersProps) {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All stock levels</SelectItem>
-          <SelectItem value="in_stock">In stock</SelectItem>
-          <SelectItem value="low_stock">Low stock</SelectItem>
-          <SelectItem value="out_of_stock">Out of stock</SelectItem>
+          {Object.entries(STOCK_STATUS_LABEL).map(([value, label]) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

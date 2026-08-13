@@ -3,10 +3,11 @@
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import { buildFilterQueryString } from "@/lib/url-params";
 
 const DEBOUNCE_MS = 400;
@@ -18,21 +19,17 @@ export function SearchInput() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState(searchParams.get("search") ?? "");
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const debouncedNavigate = useDebouncedCallback((next: string) => {
+    const query = buildFilterQueryString(searchParams, {
+      search: next || undefined,
+    });
+    router.replace(query ? `${pathname}?${query}` : pathname);
+  }, DEBOUNCE_MS);
 
   function handleChange(next: string) {
     setValue(next);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      const query = buildFilterQueryString(searchParams, {
-        search: next || undefined,
-      });
-      router.replace(query ? `${pathname}?${query}` : pathname);
-    }, DEBOUNCE_MS);
+    debouncedNavigate(next);
   }
 
   return (

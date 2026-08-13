@@ -10,7 +10,7 @@ import { z } from "zod";
 import { getAdminUser } from "@/lib/auth/get-admin-user";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const BUCKET = "product-images";
 const MAX_DIMENSION = 2400;
@@ -43,7 +43,7 @@ async function processAndUploadImage(
   }
 
   if (file.size > MAX_FILE_BYTES) {
-    return { success: false, error: "File exceeds the 5MB limit" };
+    return { success: false, error: "File exceeds the 10MB limit" };
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());

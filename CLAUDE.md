@@ -60,3 +60,14 @@ translation table rows. Never hardcode Albanian (or English) UI text in a compon
     or category edit) must call `revalidateTag()` with the **slug**, not the
     id. This is easy to get wrong and silently breaks cache invalidation
     when it is — a stale page with no error to point at.
+
+22. Server Action cache invalidation (`updateTag`/`revalidateTag`) is
+    per-runtime, not global. A Server Action only invalidates the cache of
+    whatever Next.js process it actually executes in — running the admin
+    panel against `localhost` while testing writes straight to the shared
+    Supabase database, but `updateTag()` there only clears the local dev
+    server's own cache; it has no way to reach the deployed Vercel
+    instance's cache, and vice versa. This looks like a broken invalidation
+    when it's really just two disconnected caches — always test
+    seller-facing cache-invalidation behavior against the deployed admin
+    panel, not a local one pointed at prod data.

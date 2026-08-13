@@ -57,6 +57,19 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Next's own default Server Action body limit is 1MB — well under even
+  // the *old* 5MB image upload cap, so uploads over 1MB were already
+  // getting a 413 here before src/lib/actions/admin-upload.ts's own
+  // MAX_FILE_BYTES check ever ran. 11mb (not exactly 10mb) leaves headroom
+  // for multipart/form-data's own boundary/header overhead on top of the
+  // 10MB file itself, per Next's docs on this option. Vercel's own function
+  // body limit is 100MB, so this Next-level setting is the binding
+  // constraint, not the platform.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "11mb",
+    },
+  },
   async headers() {
     return [
       {

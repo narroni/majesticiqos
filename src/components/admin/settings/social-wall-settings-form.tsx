@@ -220,7 +220,7 @@ export function SocialWallSettingsForm({ settings }: SocialWallSettingsFormProps
             <ImageUp className="text-fg-muted size-5" />
             <p className="text-fg-secondary font-body text-sm">Drag images here, or click to browse</p>
             <p className="text-fg-muted font-mono text-xs">
-              JPEG, PNG, or WebP — up to 5MB each, {MAX_SOCIAL_IMAGES} max
+              JPEG, PNG, or WebP — up to 10MB each, {MAX_SOCIAL_IMAGES} max
             </p>
             <input
               ref={fileInputRef}

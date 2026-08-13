@@ -103,7 +103,7 @@ export function CategoryImageField({ categoryId, value, onChange, error }: Categ
         <p className="text-fg-secondary font-body text-sm">
           {isUploading ? "Uploading…" : "Drag an image here, or click to browse"}
         </p>
-        <p className="text-fg-muted font-mono text-xs">JPEG, PNG, or WebP — up to 5MB</p>
+        <p className="text-fg-muted font-mono text-xs">JPEG, PNG, or WebP — up to 10MB</p>
         <input
           ref={fileInputRef}
           type="file"

@@ -48,6 +48,11 @@ export async function updateAnnouncementSettings(
   }
 
   updateTag("settings");
+  // Explicit, not just relying on "settings" happening to co-occur with
+  // "home" on getStoreSettings()'s own fetch tags (src/lib/data/settings.ts)
+  // — the announcement bar renders on the home page, so a future change to
+  // that fetch's tags shouldn't silently stop this from invalidating it.
+  updateTag("home");
   return { success: true };
 }
 
@@ -88,6 +93,11 @@ export async function updateContactSettings(
   }
 
   updateTag("settings");
+  // Explicit, not just relying on "settings" happening to co-occur with
+  // "home" on getStoreSettings()'s own fetch tags — the footer/social
+  // contact info renders on the home page too. Same reasoning as
+  // updateAnnouncementSettings above.
+  updateTag("home");
   return { success: true };
 }
 

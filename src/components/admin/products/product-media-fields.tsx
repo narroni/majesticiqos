@@ -90,7 +90,7 @@ export function ProductMediaFields({ productId }: ProductMediaFieldsProps) {
         <p className="text-fg-secondary font-body text-sm">
           Drag images here, or click to browse
         </p>
-        <p className="text-fg-muted font-mono text-xs">JPEG, PNG, or WebP — up to 5MB each</p>
+        <p className="text-fg-muted font-mono text-xs">JPEG, PNG, or WebP — up to 10MB each</p>
         <input
           ref={fileInputRef}
           type="file"

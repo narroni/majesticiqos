@@ -3,15 +3,20 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
+import { COUNTRY_LABEL } from "@/lib/country-labels";
 import { getProductsForCheckout } from "@/lib/data/products";
 import { getShippingRate } from "@/lib/data/shipping";
 import { calculateSubtotal, calculateTotal, getLineTotal, getShippingCost } from "@/lib/pricing";
 import { checkRateLimit, hashIp } from "@/lib/rate-limit";
 import { redis } from "@/lib/redis";
+import { getSiteUrl } from "@/lib/seo";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { sendNewOrderTelegramNotification } from "@/lib/telegram";
+import { formatPrice } from "@/lib/utils";
 import {
   checkoutCartItemSchema,
   createCheckoutFormSchema,
@@ -272,6 +277,9 @@ export async function submitCheckout(
   if (error) {
     const insufficientMatch = /Insufficient stock for product ([0-9a-f-]{36})/i.exec(error.message);
     if (insufficientMatch) {
+      // Expected, handled business condition (a concurrent checkout won the
+      // last unit) — not logged as an error, the customer already gets a
+      // specific, correct message below.
       const product = productMap.get(insufficientMatch[1]);
       const name = product
         ? actionResult.data.locale === "sq"
@@ -284,10 +292,28 @@ export async function submitCheckout(
       };
     }
 
+    // Every other RPC failure is unexpected — the customer only ever sees
+    // the generic message below, so this is the only place the real cause
+    // is visible at all. Log the full PostgrestError shape (code/message/
+    // details/hint), not just error.message — `hint` in particular often
+    // carries the actual fix (e.g. a signature-mismatch error names the
+    // exact overload PostgREST expected), and gets silently dropped if you
+    // only log the message string.
+    console.error("[checkout] create_order RPC failed", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
     return genericFailure(tErrors("generic"));
   }
 
-  const row = data?.[0];
+  // create_order() now also returns `id` (migrations/20260814120000_create_order_rpc_return_id.sql
+  // — the Telegram notification below needs it for the admin link) but that
+  // hasn't been pushed/typed yet (run `npm run db:push` then `npm run db:types`)
+  // — same bridge pattern as admin-settings.ts's SocialWallColumns; remove
+  // this intersection once the generated type catches up.
+  const row = data?.[0] as (NonNullable<typeof data>[number] & { id: string }) | undefined;
   if (!row) {
     return genericFailure(tErrors("generic"));
   }
@@ -297,6 +323,28 @@ export async function submitCheckout(
     orderNumber: row.order_number,
     publicToken: row.public_token,
   };
+
+  // Fire-and-forget, scheduled for after the response is sent (next/server's
+  // `after()`, backed by Vercel's waitUntil) — the customer must never wait
+  // on Telegram, and a Telegram outage must never fail an order the DB
+  // already committed. sendNewOrderTelegramNotification itself never throws
+  // (see src/lib/telegram.ts), so this has nothing further to guard.
+  const itemCount = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  after(() =>
+    sendNewOrderTelegramNotification({
+      orderId: row.id,
+      orderNumber: row.order_number,
+      firstName: formResult.data.firstName,
+      lastName: formResult.data.lastName,
+      phone: e164Phone,
+      city: formResult.data.city,
+      country: COUNTRY_LABEL[formResult.data.country],
+      itemCount,
+      totalFormatted: formatPrice(totalCents, "en"),
+      locale: actionResult.data.locale,
+      adminUrl: `${getSiteUrl()}/admin/orders/${row.id}`,
+    }),
+  );
 
   await setCachedResult(actionResult.data.idempotencyKey, result);
   return result;

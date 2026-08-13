@@ -69,6 +69,17 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "11mb",
     },
+    // This app has three separate root layouts (admin/, design-system/,
+    // [locale]/ — each renders its own <html>/<body>, see file-conventions
+    // docs on global-not-found.js), so there's no single layout to compose a
+    // normal root not-found.tsx from. Without this, a request that matches
+    // none of them (e.g. bot probes for /.env) fell through to [locale]'s
+    // dynamic segment, which calls notFound() before it ever reaches its own
+    // <html>/<body> JSX — with no root layout to supply those tags, Next had
+    // no valid document to render the 404 into and returned a 500 instead.
+    // globalNotFound bypasses layout rendering entirely for genuinely
+    // unmatched routes, so it doesn't affect any of the three real layouts.
+    globalNotFound: true,
   },
   async headers() {
     return [

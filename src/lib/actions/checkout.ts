@@ -133,7 +133,37 @@ function genericFailure(message: string): CheckoutActionResult {
   return { success: false, errors: [{ field: "form", message }] };
 }
 
+// Only reached if submitCheckoutInner throws before it can call
+// getTranslations, or getTranslations itself throws — both effectively
+// impossible in practice, but this keeps the customer-facing text
+// byte-identical to messages/{en,sq}.json's errors.generic even in that
+// pathological case, rather than inventing a different fallback string.
+const GENERIC_FALLBACK_MESSAGE: Record<Locale, string> = {
+  en: "Something went wrong. Please try again.",
+  sq: "Diçka shkoi keq. Provo përsëri.",
+};
+
 export async function submitCheckout(
+  input: CheckoutActionInput,
+): Promise<CheckoutActionResult> {
+  try {
+    return await submitCheckoutInner(input);
+  } catch (error) {
+    // Catch-all safety net: any unexpected throw from any gate below (a
+    // Supabase client construction error, a Redis client throwing outside
+    // the try/catches that are supposed to catch it, a bug) would otherwise
+    // surface as a framework-level Server Action error with no application
+    // log at all — exactly the "generic message, nothing in Vercel logs"
+    // symptom this whole logging pass exists to eliminate.
+    console.error(
+      "[checkout] Uncaught exception in submitCheckout — a gate crashed instead of returning a result",
+      error instanceof Error ? { message: error.message, stack: error.stack } : error,
+    );
+    return genericFailure(GENERIC_FALLBACK_MESSAGE[input.locale] ?? GENERIC_FALLBACK_MESSAGE.en);
+  }
+}
+
+async function submitCheckoutInner(
   input: CheckoutActionInput,
 ): Promise<CheckoutActionResult> {
   const tErrors = await getTranslations({ locale: input.locale, namespace: "errors" });
@@ -154,6 +184,19 @@ export async function submitCheckout(
           message: issue.message,
         }));
 
+    // Zod issues reject client-side too (the same schema backs the form's
+    // zodResolver), so a server-side rejection here means either the client
+    // check was bypassed (a direct call, a stale bundle) or a field only
+    // validated server-side (actionOnlySchema) failed.
+    console.warn("[checkout] Rejected: zod validation failed", {
+      formIssues: formResult.success
+        ? null
+        : formResult.error.issues.map((issue) => ({ path: issue.path, message: issue.message })),
+      actionIssues: actionResult.success
+        ? null
+        : actionResult.error.issues.map((issue) => ({ path: issue.path, message: issue.message })),
+    });
+
     return {
       success: false,
       errors: fieldErrors.length > 0 ? fieldErrors : [{ field: "form", message: tErrors("generic") }],
@@ -161,19 +204,37 @@ export async function submitCheckout(
   }
 
   // Honeypot — real users never see this field, so any value means a bot.
+  // Logging the actual value (not just that it fired) is what distinguishes
+  // "a scraper filled every field" from "a password manager autofilled one
+  // hidden input with a name/address" — the latter is a false positive that
+  // would silently reject every real order from an affected browser.
   if (formResult.data.honeypot) {
+    console.warn("[checkout] Rejected: honeypot field was non-empty", {
+      honeypotValue: formResult.data.honeypot,
+    });
     return genericFailure(tErrors("generic"));
   }
 
   // Minimum time-on-form.
   const elapsedSeconds = (Date.now() - actionResult.data.formStartedAt) / 1000;
   if (elapsedSeconds < MIN_FORM_SECONDS) {
+    console.warn("[checkout] Rejected: form submitted faster than the minimum time-on-form", {
+      elapsedSeconds,
+      minFormSeconds: MIN_FORM_SECONDS,
+    });
     return genericFailure(tErrors("generic"));
   }
 
   // Idempotency — a double-submit with the same key replays the first result.
+  // getCachedResult already logs internally if the Redis read itself throws
+  // (fails open to a cache miss); this logs the distinct non-error case of
+  // an actual hit, so a replayed result doesn't look like a fresh silent
+  // failure in the logs.
   const cached = await getCachedResult(actionResult.data.idempotencyKey);
   if (cached) {
+    console.info("[checkout] Idempotency cache hit — replaying previous result", {
+      idempotencyKey: actionResult.data.idempotencyKey,
+    });
     return cached;
   }
 
@@ -187,13 +248,30 @@ export async function submitCheckout(
   const ipHash = hashIp(ip);
 
   if (!(await checkRateLimit(ipHash)).allowed) {
+    // checkRateLimit fails open on any Redis error (see rate-limit.ts) and
+    // logs that failure itself — reaching `allowed: false` here always means
+    // a genuine limit was hit, not a Redis outage.
+    console.warn("[checkout] Rejected: rate limit exceeded", { ipHash });
     return genericFailure(tErrors("generic"));
   }
 
   // 3. Recompute every price and stock check from the database — the client
   // sends only { productId, quantity }; nothing priced is ever trusted.
   const productIds = actionResult.data.items.map((item) => item.productId);
-  const products = await getProductsForCheckout(productIds);
+  let products;
+  try {
+    products = await getProductsForCheckout(productIds);
+  } catch (error) {
+    // Unlike the RPC call below, getProductsForCheckout throws directly on a
+    // Postgres/PostgREST error rather than returning it — an uncaught throw
+    // here would otherwise be swallowed by the framework with zero log line,
+    // matching the exact symptom being chased.
+    console.error("[checkout] getProductsForCheckout threw while recomputing prices/stock", {
+      productIds,
+      error: error instanceof Error ? { message: error.message, stack: error.stack } : error,
+    });
+    return genericFailure(tErrors("generic"));
+  }
   const productMap = new Map(products.map((product) => [product.id, product]));
 
   const fieldErrors: CheckoutFieldError[] = [];
@@ -230,6 +308,7 @@ export async function submitCheckout(
   }
 
   if (fieldErrors.length > 0) {
+    console.warn("[checkout] Rejected: product not found or insufficient stock", { fieldErrors });
     return { success: false, errors: fieldErrors };
   }
 
@@ -308,12 +387,17 @@ export async function submitCheckout(
     return genericFailure(tErrors("generic"));
   }
 
-  // create_order() now also returns `id` (migrations/20260814120000_create_order_rpc_return_id.sql
-  // — the Telegram notification below needs it for the admin link) but that
-  // hasn't been pushed/typed yet (run `npm run db:push` then `npm run db:types`)
-  // — same bridge pattern as admin-settings.ts's SocialWallColumns; remove
-  // this intersection once the generated type catches up.
-  const row = data?.[0] as (NonNullable<typeof data>[number] & { id: string }) | undefined;
+  // create_order() now also returns `out_id` (migrations/20260814130000_fix_create_order_out_params.sql
+  // — named out_id rather than id because an OUT parameter named `id` shadows
+  // the orders.id column as a plpgsql variable, breaking the bare
+  // `returning id into v_order_id` inside the function with a 42702
+  // "ambiguous column" error; same fix already applied to save_product and
+  // change_order_status. The Telegram notification below needs it for the
+  // admin link. Hasn't been pushed/typed yet (run `npm run db:push` then
+  // `npm run db:types`) — same bridge pattern as admin-settings.ts's
+  // SocialWallColumns; remove this intersection once the generated type
+  // catches up.
+  const row = data?.[0] as (NonNullable<typeof data>[number] & { out_id: string }) | undefined;
   if (!row) {
     return genericFailure(tErrors("generic"));
   }
@@ -332,7 +416,7 @@ export async function submitCheckout(
   const itemCount = orderItems.reduce((sum, item) => sum + item.quantity, 0);
   after(() =>
     sendNewOrderTelegramNotification({
-      orderId: row.id,
+      orderId: row.out_id,
       orderNumber: row.order_number,
       firstName: formResult.data.firstName,
       lastName: formResult.data.lastName,
@@ -342,7 +426,7 @@ export async function submitCheckout(
       itemCount,
       totalFormatted: formatPrice(totalCents, "en"),
       locale: actionResult.data.locale,
-      adminUrl: `${getSiteUrl()}/admin/orders/${row.id}`,
+      adminUrl: `${getSiteUrl()}/admin/orders/${row.out_id}`,
     }),
   );
 

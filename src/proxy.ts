@@ -7,8 +7,25 @@ import { routing } from "@/i18n/routing";
 const handleI18nRouting = createMiddleware(routing);
 
 export default async function proxy(request: NextRequest) {
-  const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
-  const isAdminLoginRoute = request.nextUrl.pathname === "/admin/login";
+  const { pathname } = request.nextUrl;
+
+  // Dotfile-style probes (/.env, /.env.local, /.git/config, ...) bypass the
+  // matcher below (it excludes any path with a dot, so real static assets in
+  // public/ pass straight through to Next's own file serving) but are still
+  // handled by the app router as a fallback — and, having a first segment
+  // that isn't "en"/"sq"/"admin"/"design-system", they'd reach
+  // [locale]/layout.tsx's notFound() before it ever renders its own
+  // <html>/<body>. This app intentionally has three independent root
+  // layouts (admin/, design-system/, [locale]/) and no shared one, so there
+  // was nothing to supply those tags — Next returned a 500 instead of a
+  // clean 404. Rejecting these here, before any App Router rendering,
+  // sidesteps that entirely.
+  if (pathname.startsWith("/.")) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isAdminLoginRoute = pathname === "/admin/login";
 
   // Admin is English-only and must never be locale-prefixed, so it skips
   // next-intl's routing entirely rather than being excluded from the
@@ -55,5 +72,12 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|design-system|_next|_vercel|.*\\..*).*)"],
+  matcher: [
+    "/((?!api|design-system|_next|_vercel|.*\\..*).*)",
+    // Dotfile-style probes only — the pattern above deliberately excludes
+    // every dotted path (real static assets in public/ need to reach Next's
+    // own file serving untouched), so this narrowly re-includes paths whose
+    // first segment starts with a literal dot.
+    "/(\\..*)",
+  ],
 };

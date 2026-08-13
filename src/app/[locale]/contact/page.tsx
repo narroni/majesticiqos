@@ -5,7 +5,7 @@ import { Container } from "@/components/shared/container";
 import { InstagramIcon } from "@/components/shared/social-icons";
 import { siteConfig } from "@/config/site";
 import { getStoreSettings } from "@/lib/data/settings";
-import type { Locale } from "@/types";
+import { requireLocale } from "@/lib/locale";
 
 function instagramHandleFromUrl(url: string): string | null {
   try {
@@ -21,8 +21,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "contact" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "contact" });
 
   return {
     title: t("title"),

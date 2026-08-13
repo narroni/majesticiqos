@@ -7,8 +7,8 @@ import { Container } from "@/components/shared/container";
 import { JsonLd } from "@/components/shared/json-ld";
 import { Link } from "@/i18n/navigation";
 import { getCategories } from "@/lib/data/categories";
+import { requireLocale } from "@/lib/locale";
 import { buildAlternates, buildItemListJsonLd, getSiteUrl } from "@/lib/seo";
-import type { Locale } from "@/types";
 
 // Same cache treatment as the home page's use of this data.
 export const revalidate = 300;
@@ -18,16 +18,16 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const locale = requireLocale((await params).locale);
   const [tHome, tSeo] = await Promise.all([
-    getTranslations({ locale: locale as Locale, namespace: "home.categories" }),
-    getTranslations({ locale: locale as Locale, namespace: "seo" }),
+    getTranslations({ locale, namespace: "home.categories" }),
+    getTranslations({ locale, namespace: "seo" }),
   ]);
 
   return {
     title: tHome("heading"),
     description: tSeo("defaultDescription"),
-    alternates: buildAlternates("/categories", locale as Locale),
+    alternates: buildAlternates("/categories", locale),
   };
 }
 
@@ -36,8 +36,7 @@ export default async function CategoriesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale((await params).locale);
 
   const [t, tCatalog, categories] = await Promise.all([
     getTranslations("home.categories"),

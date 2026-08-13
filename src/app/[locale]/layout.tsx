@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { fontVariables } from "@/app/fonts";
@@ -12,8 +11,8 @@ import { Header } from "@/components/layout/header";
 import { JsonLd } from "@/components/shared/json-ld";
 import { siteConfig } from "@/config/site";
 import { routing } from "@/i18n/routing";
+import { requireLocale } from "@/lib/locale";
 import { buildOrganizationJsonLd, buildWebsiteJsonLd, getSiteUrl } from "@/lib/seo";
-import type { Locale } from "@/types";
 
 import "../globals.css";
 
@@ -30,8 +29,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "seo" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "seo" });
 
   return {
     metadataBase: new URL(getSiteUrl()),
@@ -50,11 +49,7 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  const locale = requireLocale((await params).locale);
 
   setRequestLocale(locale);
 
@@ -63,7 +58,7 @@ export default async function LocaleLayout({
       <body className="flex min-h-full flex-col">
         {/* BLUEPRINT §9.3 — Organization + WebSite/SearchAction on every page. */}
         <JsonLd data={buildOrganizationJsonLd()} />
-        <JsonLd data={buildWebsiteJsonLd(locale as Locale)} />
+        <JsonLd data={buildWebsiteJsonLd(locale)} />
         <NextIntlClientProvider>
           <AppProviders>
             <CartHydration />

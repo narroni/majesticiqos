@@ -15,9 +15,9 @@ import {
   getAllProductSlugs,
   getProductBySlug,
 } from "@/lib/data/products";
+import { requireLocale } from "@/lib/locale";
 import { buildAlternates, buildBreadcrumbJsonLd, getSiteUrl } from "@/lib/seo";
 import { formatPrice } from "@/lib/utils";
-import type { Locale } from "@/types";
 
 // BLUEPRINT §1.2 — Product detail: RSC + ISR + generateStaticParams,
 // revalidate 300, tag `product:{slug}` (see CLAUDE.md's caching rules).
@@ -35,8 +35,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const { locale, slug } = await params;
-  const product = await getProductBySlug(slug, locale as Locale);
+  const { locale: rawLocale, slug } = await params;
+  const locale = requireLocale(rawLocale);
+  const product = await getProductBySlug(slug, locale);
 
   if (!product) {
     return {};
@@ -48,7 +49,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: buildAlternates(`/products/${slug}`, locale as Locale),
+    alternates: buildAlternates(`/products/${slug}`, locale),
     // No manual openGraph.images here — the dynamic opengraph-image.tsx in
     // this route segment supplies the branded product/name/price image
     // automatically; overriding it with the raw product photo would defeat
@@ -73,7 +74,7 @@ function getPriceValidUntil(): string {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale(locale);
 
   const product = await getProductBySlug(slug, currentLocale);
 

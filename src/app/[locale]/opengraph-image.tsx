@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig } from "@/config/site";
-import type { Locale } from "@/types";
+import { requireLocale } from "@/lib/locale";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -23,8 +23,8 @@ export default async function LocaleOgImage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "home.hero" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "home.hero" });
 
   return new ImageResponse(
     (

@@ -2,8 +2,8 @@ import { ImageResponse } from "next/og";
 
 import { siteConfig } from "@/config/site";
 import { getProductBySlug } from "@/lib/data/products";
+import { requireLocale } from "@/lib/locale";
 import { formatPrice } from "@/lib/utils";
-import type { Locale } from "@/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -27,8 +27,9 @@ interface OgImageProps {
 }
 
 export default async function ProductOgImage({ params }: OgImageProps) {
-  const { locale, slug } = await params;
-  const product = await getProductBySlug(slug, locale as Locale);
+  const { locale: rawLocale, slug } = await params;
+  const locale = requireLocale(rawLocale);
+  const product = await getProductBySlug(slug, locale);
 
   const name = product?.name ?? siteConfig.name;
   const price = product ? formatPrice(product.effectivePriceCents, locale) : null;

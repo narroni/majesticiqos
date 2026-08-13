@@ -16,6 +16,7 @@ import { Container } from "@/components/shared/container";
 import { JsonLd } from "@/components/shared/json-ld";
 import { getCategories } from "@/lib/data/categories";
 import { getProducts } from "@/lib/data/products";
+import { requireLocale } from "@/lib/locale";
 import { buildAlternates, buildItemListJsonLd, getSiteUrl } from "@/lib/seo";
 import { parseProductFilters, type ProductFilters } from "@/lib/url-params";
 import type { Locale } from "@/types";
@@ -38,10 +39,10 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const locale = requireLocale((await params).locale);
   const [tNav, tSeo] = await Promise.all([
-    getTranslations({ locale: locale as Locale, namespace: "nav" }),
-    getTranslations({ locale: locale as Locale, namespace: "seo" }),
+    getTranslations({ locale, namespace: "nav" }),
+    getTranslations({ locale, namespace: "seo" }),
   ]);
 
   return {
@@ -51,7 +52,7 @@ export async function generateMetadata({
     // active search/category/price params — those are the same content,
     // not distinct pages, and shouldn't compete against each other or the
     // canonical URL for ranking.
-    alternates: buildAlternates("/products", locale as Locale),
+    alternates: buildAlternates("/products", locale),
   };
 }
 
@@ -59,8 +60,7 @@ export default async function ProductsPage({
   params,
   searchParams,
 }: ProductsPageProps) {
-  const { locale } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale((await params).locale);
   const rawSearchParams = await searchParams;
   const filters = parseProductFilters(rawSearchParams);
 

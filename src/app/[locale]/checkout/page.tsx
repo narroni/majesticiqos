@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { CheckoutPageContent } from "@/components/checkout/checkout-page-content";
 import { Container } from "@/components/shared/container";
 import { getShippingRates } from "@/lib/data/shipping";
-import type { Locale } from "@/types";
+import { requireLocale } from "@/lib/locale";
 
 interface CheckoutPageProps {
   params: Promise<{ locale: string }>;
@@ -13,8 +13,8 @@ interface CheckoutPageProps {
 export async function generateMetadata({
   params,
 }: CheckoutPageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "checkout" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "checkout" });
 
   return {
     title: t("title"),
@@ -23,8 +23,7 @@ export async function generateMetadata({
 }
 
 export default async function CheckoutPage({ params }: CheckoutPageProps) {
-  const { locale } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale((await params).locale);
 
   const [t, shippingRates] = await Promise.all([
     getTranslations("checkout"),

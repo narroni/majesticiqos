@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { ComingSoonPage } from "@/components/shared/coming-soon-page";
-import type { Locale } from "@/types";
+import { requireLocale } from "@/lib/locale";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "footer" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "footer" });
 
   return {
     title: t("links.shippingReturns"),

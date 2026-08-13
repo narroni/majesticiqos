@@ -9,8 +9,8 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { siteConfig } from "@/config/site";
 import { getCategoryBySlug, getSitemapCategories } from "@/lib/data/categories";
 import { getProducts } from "@/lib/data/products";
+import { requireLocale } from "@/lib/locale";
 import { buildAlternates, buildBreadcrumbJsonLd, buildItemListJsonLd, getSiteUrl } from "@/lib/seo";
-import type { Locale } from "@/types";
 
 // BLUEPRINT §1.2 — same treatment as product detail: ISR, revalidate 300,
 // tag `category:{slug}` (see getCategoryBySlug and CLAUDE.md's caching rules).
@@ -28,14 +28,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const { locale, slug } = await params;
-  const category = await getCategoryBySlug(slug, locale as Locale);
+  const { locale: rawLocale, slug } = await params;
+  const locale = requireLocale(rawLocale);
+  const category = await getCategoryBySlug(slug, locale);
 
   if (!category) {
     return {};
   }
 
-  const tSeo = await getTranslations({ locale: locale as Locale, namespace: "seo.category" });
+  const tSeo = await getTranslations({ locale, namespace: "seo.category" });
   const description =
     category.description ||
     tSeo("descriptionFallback", { categoryName: category.name, siteName: siteConfig.name });
@@ -43,13 +44,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   return {
     title: category.name,
     description,
-    alternates: buildAlternates(`/categories/${slug}`, locale as Locale),
+    alternates: buildAlternates(`/categories/${slug}`, locale),
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { locale, slug } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale(locale);
 
   const category = await getCategoryBySlug(slug, currentLocale);
 

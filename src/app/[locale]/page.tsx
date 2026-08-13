@@ -10,8 +10,8 @@ import { SocialWall } from "@/components/home/social-wall";
 import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { siteConfig } from "@/config/site";
 import { getStoreSettings } from "@/lib/data/settings";
+import { requireLocale } from "@/lib/locale";
 import { buildAlternates } from "@/lib/seo";
-import type { Locale } from "@/types";
 
 // BLUEPRINT §1.2 — Home: RSC + ISR, revalidate 300, tag `home`.
 export const revalidate = 300;
@@ -21,14 +21,14 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "seo" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "seo" });
 
   return {
     // The homepage's own title IS the brand name — no "%s | Brand" template.
     title: { absolute: siteConfig.name },
     description: t("defaultDescription"),
-    alternates: buildAlternates("", locale as Locale),
+    alternates: buildAlternates("", locale),
   };
 }
 
@@ -37,8 +37,7 @@ export default async function Home({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale((await params).locale);
 
   const settings = await getStoreSettings();
   const announcementText =

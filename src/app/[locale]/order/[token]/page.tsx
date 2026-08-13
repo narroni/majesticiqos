@@ -8,8 +8,8 @@ import { Container } from "@/components/shared/container";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Link } from "@/i18n/navigation";
 import { getOrderByPublicToken } from "@/lib/data/orders";
+import { requireLocale } from "@/lib/locale";
 import { cx, formatPrice } from "@/lib/utils";
-import type { Locale } from "@/types";
 
 // Never cached, never indexed — this URL's only credential is the
 // unguessable public_token (BLUEPRINT §8.2), so it must not end up in a
@@ -28,7 +28,7 @@ export default async function OrderConfirmationPage({
   params,
 }: OrderConfirmationPageProps) {
   const { locale, token } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale(locale);
 
   const order = await getOrderByPublicToken(token);
 

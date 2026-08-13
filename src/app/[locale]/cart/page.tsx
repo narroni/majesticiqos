@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { CartPageContent } from "@/components/cart/cart-page-content";
 import { Container } from "@/components/shared/container";
 import { getShippingRates } from "@/lib/data/shipping";
-import type { Locale } from "@/types";
+import { requireLocale } from "@/lib/locale";
 
 interface CartPageProps {
   params: Promise<{ locale: string }>;
@@ -13,8 +13,8 @@ interface CartPageProps {
 export async function generateMetadata({
   params,
 }: CartPageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "cart" });
+  const locale = requireLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "cart" });
 
   // Personalized, per-session content — nothing here is worth ranking, but
   // it's not excluded from robots.txt (only /admin, /api, /order/*,
@@ -27,8 +27,7 @@ export async function generateMetadata({
 }
 
 export default async function CartPage({ params }: CartPageProps) {
-  const { locale } = await params;
-  const currentLocale = locale as Locale;
+  const currentLocale = requireLocale((await params).locale);
 
   const [t, shippingRates] = await Promise.all([
     getTranslations("cart"),

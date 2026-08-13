@@ -127,6 +127,3 @@ export interface GetProductsParams {
 }
 
 export type { Tables, Enums };
-export type ProductRow = Tables<"products">;
-export type OrderRow = Tables<"orders">;
-export type OrderItemRow = Tables<"order_items">;

@@ -1,20 +1,13 @@
 {
   "common": {
     "addToCart": "Shto në shportë",
-    "quickAdd": "Shto shpejt",
-    "loading": "Duke u ngarkuar…",
     "viewAll": "Shiko të gjitha",
     "search": "Kërko",
-    "close": "Mbyll",
-    "quantity": "Sasia",
-    "back": "Kthehu",
-    "save": "Ruaj",
-    "cancel": "Anulo"
+    "close": "Mbyll"
   },
   "nav": {
     "products": "Produktet",
     "categories": "Kategoritë",
-    "contact": "Kontakt",
     "cart": "Shporta",
     "menu": "Menu"
   },
@@ -23,8 +16,7 @@
       "title": "E ndërtuar për të zgjatur.",
       "subtitle": "Aksesorë premium, të projektuar për ritualin tënd të përditshëm.",
       "ctaPrimary": "Shiko koleksionin",
-      "ctaSecondary": "Mëso më shumë",
-      "_todo": "Placeholder copy — replace once the brand name is finalized (see BLUEPRINT §14.1)."
+      "ctaSecondary": "Mëso më shumë"
     },
     "featured": {
       "eyebrow": "PËRZGJEDHJA JONË",
@@ -56,17 +48,13 @@
     "outOfStock": "Nuk ka në gjendje",
     "description": "Përshkrimi",
     "relatedProducts": "Produkte të ngjashme",
-    "quantity": "Sasia",
     "discountBadge": "Zbritje",
     "gallery": {
       "thumbnailAlt": "Pamje {index} nga {total}",
-      "openLightbox": "Zgjero imazhin",
-      "previousImage": "Imazhi paraardhës",
-      "nextImage": "Imazhi tjetër"
+      "openLightbox": "Zgjero imazhin"
     },
     "decreaseQuantity": "Zvogëlo sasinë",
     "increaseQuantity": "Rrit sasinë",
-    "addToCartStubbed": "Shporta nuk është ende gati — së shpejti",
     "notFoundTitle": "Produkti nuk u gjet",
     "notFoundDescription": "Ky produkt nuk ekziston ose është hequr.",
     "backToProducts": "Kthehu te produktet"
@@ -102,9 +90,7 @@
     "empty": "Shporta juaj është e zbrazët",
     "continueShopping": "Vazhdo blerjen",
     "goToCart": "Shko te shporta",
-    "itemCount": "{count, plural, one {# artikull} other {# artikuj}}",
     "remove": "Hiq",
-    "quantity": "Sasia",
     "subtotal": "Nëntotali",
     "shipping": "Transporti",
     "total": "Totali",
@@ -113,8 +99,6 @@
     "outOfStockNotice": "Ky produkt nuk është më në gjendje",
     "noLongerAvailable": "Nuk ofrohet më",
     "quantityAdjusted": "Sasia u zvogëlua në {quantity} për shkak të gjendjes së kufizuar",
-    "openCart": "Hap shportën",
-    "yourCart": "Shporta jote",
     "reconciling": "Duke kontrolluar shportën…",
     "summary": "Përmbledhja",
     "selectCountry": "Zgjidh shtetin për të parë koston e transportit"
@@ -145,8 +129,7 @@
     "submit": "Bëj porosinë",
     "submitting": "Duke dërguar porosinë…",
     "emptyCartToast": "Shporta është e zbrazët — shto produkte për të vazhduar",
-    "stockInsufficientError": "{product} nuk ka sasi të mjaftueshme në gjendje",
-    "networkError": "Ndodhi një gabim. Provo përsëri."
+    "stockInsufficientError": "{product} nuk ka sasi të mjaftueshme në gjendje"
   },
   "order": {
     "success": "Porosia juaj është pranuar. Shitësi do t'ju kontaktojë së shpejti për konfirmim.",
@@ -156,7 +139,6 @@
     "contactWindow": "Do t'ju kontaktojmë shpejt për konfirmim.",
     "savePage": "Ruaj këtë faqe",
     "continueShopping": "Vazhdo blerjen",
-    "whatsappContact": "Na kontakto në WhatsApp",
     "status": {
       "pending": "Në pritje",
       "confirmed": "Konfirmuar",
@@ -170,7 +152,6 @@
     "required": "Kjo fushë është e detyrueshme",
     "invalidPhone": "Numër telefoni i pavlefshëm",
     "invalidEmail": "Adresë email e pavlefshme",
-    "tooShort": "Duhet të ketë të paktën {min} karaktere",
     "tooLong": "Nuk mund të kalojë {max} karaktere",
     "selectCountry": "Zgjidh një shtet",
     "generic": "Diçka shkoi keq. Provo përsëri."
@@ -191,20 +172,12 @@
     "paymentDeliveryNote": "Pagesë në dorëzim · Dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut",
     "copyright": "© {year} Të gjitha të drejtat e rezervuara.",
     "instagramLabel": "Instagram",
-    "facebookLabel": "Facebook",
-    "_todo": "brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1)."
+    "facebookLabel": "Facebook"
   },
   "seo": {
     "defaultDescription": "Aksesorë premium për pajisjet e tabakut të nxehtë, me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut.",
-    "product": {
-      "descriptionFallback": "Blej {productName} online me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut. Pagesë në dorëzim."
-    },
     "category": {
       "descriptionFallback": "Blej {categoryName} te {siteName}, me dërgesë në Kosovë, Shqipëri dhe Maqedoninë e Veriut."
-    },
-    "home": {
-      "title": "",
-      "description": ""
     }
   },
   "comingSoon": {

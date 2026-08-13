@@ -1,20 +1,13 @@
 {
   "common": {
     "addToCart": "Add to cart",
-    "quickAdd": "Quick add",
-    "loading": "Loading…",
     "viewAll": "View all",
     "search": "Search",
-    "close": "Close",
-    "quantity": "Quantity",
-    "back": "Back",
-    "save": "Save",
-    "cancel": "Cancel"
+    "close": "Close"
   },
   "nav": {
     "products": "Products",
     "categories": "Categories",
-    "contact": "Contact",
     "cart": "Cart",
     "menu": "Menu"
   },
@@ -23,8 +16,7 @@
       "title": "Built to last.",
       "subtitle": "Premium accessories, designed for your everyday ritual.",
       "ctaPrimary": "Shop the collection",
-      "ctaSecondary": "Learn more",
-      "_todo": "Placeholder copy — replace once the brand name is finalized (see BLUEPRINT §14.1)."
+      "ctaSecondary": "Learn more"
     },
     "featured": {
       "eyebrow": "OUR SELECTION",
@@ -56,17 +48,13 @@
     "outOfStock": "Out of stock",
     "description": "Description",
     "relatedProducts": "Related products",
-    "quantity": "Quantity",
     "discountBadge": "Sale",
     "gallery": {
       "thumbnailAlt": "View {index} of {total}",
-      "openLightbox": "Expand image",
-      "previousImage": "Previous image",
-      "nextImage": "Next image"
+      "openLightbox": "Expand image"
     },
     "decreaseQuantity": "Decrease quantity",
     "increaseQuantity": "Increase quantity",
-    "addToCartStubbed": "Cart isn't ready yet — coming soon",
     "notFoundTitle": "Product not found",
     "notFoundDescription": "This product doesn't exist or has been removed.",
     "backToProducts": "Back to products"
@@ -102,9 +90,7 @@
     "empty": "Your cart is empty",
     "continueShopping": "Continue shopping",
     "goToCart": "Go to cart",
-    "itemCount": "{count, plural, one {# item} other {# items}}",
     "remove": "Remove",
-    "quantity": "Quantity",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "total": "Total",
@@ -113,8 +99,6 @@
     "outOfStockNotice": "This item is now out of stock",
     "noLongerAvailable": "No longer available",
     "quantityAdjusted": "Quantity reduced to {quantity} due to limited stock",
-    "openCart": "Open cart",
-    "yourCart": "Your cart",
     "reconciling": "Checking your cart…",
     "summary": "Summary",
     "selectCountry": "Select a country to see shipping cost"
@@ -145,8 +129,7 @@
     "submit": "Place order",
     "submitting": "Placing your order…",
     "emptyCartToast": "Your cart is empty — add products to continue",
-    "stockInsufficientError": "{product} doesn't have enough stock available",
-    "networkError": "Something went wrong. Please try again."
+    "stockInsufficientError": "{product} doesn't have enough stock available"
   },
   "order": {
     "success": "Your order has been received. The seller will contact you soon for confirmation.",
@@ -156,7 +139,6 @@
     "contactWindow": "We'll contact you shortly to confirm.",
     "savePage": "Save this page",
     "continueShopping": "Continue shopping",
-    "whatsappContact": "Contact us on WhatsApp",
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
@@ -170,7 +152,6 @@
     "required": "This field is required",
     "invalidPhone": "Invalid phone number",
     "invalidEmail": "Invalid email address",
-    "tooShort": "Must be at least {min} characters",
     "tooLong": "Must not exceed {max} characters",
     "selectCountry": "Please select a country",
     "generic": "Something went wrong. Please try again."
@@ -191,20 +172,12 @@
     "paymentDeliveryNote": "Cash on delivery · Delivery to Kosovo, Albania and North Macedonia",
     "copyright": "© {year} All rights reserved.",
     "instagramLabel": "Instagram",
-    "facebookLabel": "Facebook",
-    "_todo": "brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1)."
+    "facebookLabel": "Facebook"
   },
   "seo": {
     "defaultDescription": "Premium accessories for heated-tobacco devices, with delivery to Kosovo, Albania and North Macedonia.",
-    "product": {
-      "descriptionFallback": "Buy {productName} online with delivery to Kosovo, Albania and North Macedonia. Cash on delivery."
-    },
     "category": {
       "descriptionFallback": "Shop {categoryName} at {siteName}, with delivery to Kosovo, Albania and North Macedonia."
-    },
-    "home": {
-      "title": "",
-      "description": ""
     }
   },
   "comingSoon": {

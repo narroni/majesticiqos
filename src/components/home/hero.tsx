@@ -8,6 +8,10 @@ import type { Locale } from "@/types";
 export async function Hero({ locale }: { locale: Locale }) {
   const [t, settings] = await Promise.all([getTranslations("home.hero"), getStoreSettings()]);
 
+  // The home.hero message-file defaults (title/subtitle/ctaPrimary/
+  // ctaSecondary below) are placeholder copy — replace once the brand name
+  // is finalized (see BLUEPRINT §14.1).
+  //
   // Every field falls back to the message-file default when the admin
   // hasn't set one, so an unconfigured hero never renders blank
   // (src/lib/data/settings.ts, /admin/settings "Homepage hero"). HeroContent

@@ -23,6 +23,7 @@ export async function Footer() {
           <span className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase">
             {siteConfig.name}
           </span>
+          {/* brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1). */}
           <p className="text-fg-secondary font-body text-sm">
             {t("brandTagline")}
           </p>

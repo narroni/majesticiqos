@@ -32,6 +32,8 @@ export interface HeroContentProps {
 }
 
 const HIGHLIGHT_CLASS = "outline-accent rounded-xs outline-2 outline-offset-4";
+/** Short stagger for the hero's on-load entrance — same register as Reveal's scroll animations, just mount-triggered instead of viewport-triggered. */
+const ENTRANCE_STEP_MS = 80;
 
 function HighlightWrap({
   active,
@@ -65,6 +67,10 @@ export function HeroContent({
   heightClassName,
   style,
 }: HeroContentProps) {
+  const headingDelay = tagline ? ENTRANCE_STEP_MS : 0;
+  const subheadingDelay = headingDelay + ENTRANCE_STEP_MS;
+  const ctaDelay = subheadingDelay + ENTRANCE_STEP_MS;
+
   return (
     <section
       style={style}
@@ -82,23 +88,23 @@ export function HeroContent({
 
       <Container className="relative flex flex-col gap-6 pb-24">
         {tagline ? (
-          <Reveal>
+          <Reveal trigger="mount">
             <HighlightWrap active={highlightedArea === "tagline"} className="inline-block">
               <p className="text-accent font-mono text-xs tracking-[0.15em] uppercase">{tagline}</p>
             </HighlightWrap>
           </Reveal>
         ) : null}
-        <Reveal>
+        <Reveal trigger="mount" delay={headingDelay}>
           <HighlightWrap active={highlightedArea === "heading"} className="inline-block">
             <h1 className="text-display-xl font-display text-fg-primary max-w-2xl">{heading}</h1>
           </HighlightWrap>
         </Reveal>
-        <Reveal delay={100}>
+        <Reveal trigger="mount" delay={subheadingDelay}>
           <HighlightWrap active={highlightedArea === "subheading"} className="inline-block">
             <p className="text-body-lg font-body text-fg-secondary max-w-xl">{subheading}</p>
           </HighlightWrap>
         </Reveal>
-        <Reveal delay={200}>
+        <Reveal trigger="mount" delay={ctaDelay}>
           <HighlightWrap active={highlightedArea === "cta"} className="inline-flex flex-wrap gap-3">
             {/* Plain <Link>/<span> styled with buttonVariants, not Base UI's
                 <Button> — these are real anchors with nothing for a

@@ -15,6 +15,7 @@ export async function Footer() {
     getStoreSettings(),
   ]);
   const currentYear = new Date().getFullYear();
+  const instagramUrl = settings.instagramUrl || `https://instagram.com/${siteConfig.instagramHandle}`;
 
   return (
     <footer className="bg-bg-elevated border-border border-t">
@@ -97,32 +98,28 @@ export async function Footer() {
               {settings.contactPhone}
             </a>
           ) : null}
-          {settings.instagramUrl || settings.facebookUrl ? (
-            <div className="flex items-center gap-3 pt-1">
-              {settings.instagramUrl ? (
-                <a
-                  href={settings.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t("instagramLabel")}
-                  className="text-fg-secondary hover:text-fg-primary"
-                >
-                  <InstagramIcon className="size-4" />
-                </a>
-              ) : null}
-              {settings.facebookUrl ? (
-                <a
-                  href={settings.facebookUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t("facebookLabel")}
-                  className="text-fg-secondary hover:text-fg-primary"
-                >
-                  <FacebookIcon className="size-4" />
-                </a>
-              ) : null}
-            </div>
-          ) : null}
+          <div className="flex items-center gap-3 pt-1">
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("instagramLabel")}
+              className="text-fg-secondary hover:text-fg-primary"
+            >
+              <InstagramIcon className="size-4" />
+            </a>
+            {settings.facebookUrl ? (
+              <a
+                href={settings.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t("facebookLabel")}
+                className="text-fg-secondary hover:text-fg-primary"
+              >
+                <FacebookIcon className="size-4" />
+              </a>
+            ) : null}
+          </div>
         </div>
       </Container>
 

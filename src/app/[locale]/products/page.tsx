@@ -160,7 +160,7 @@ async function ProductResults({
         {t("resultsCount", { count: result.total })}
       </p>
 
-      <Stagger className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4" immediateCount={4}>
         {result.items.map((product, index) => (
           <ProductCard
             key={product.id}

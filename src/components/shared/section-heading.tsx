@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { Reveal } from "@/components/motion/reveal";
 import { cx } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -11,6 +12,10 @@ interface SectionHeadingProps {
   className?: string;
 }
 
+// Wrapped in its own Reveal (rather than being a Stagger item alongside the
+// section's content) so it crosses the viewport threshold on its own — being
+// physically above the content, that means it settles in slightly ahead of
+// it, not simultaneously.
 export function SectionHeading({
   eyebrow,
   title,
@@ -20,7 +25,7 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div
+    <Reveal
       className={cx(
         "flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between",
         className,
@@ -47,6 +52,6 @@ export function SectionHeading({
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
-    </div>
+    </Reveal>
   );
 }

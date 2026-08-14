@@ -14,9 +14,6 @@ export async function generateMetadata({
 
   return {
     title: t("terms.title"),
-    // Unreviewed legal draft (see LegalPage's banner) — stays noindex until
-    // a lawyer has signed off.
-    robots: { index: false, follow: false },
   };
 }
 

@@ -184,21 +184,13 @@
     "message": "Kjo faqe do të jetë gati së shpejti."
   },
   "legal": {
-    "draftNotice": "SKICË PUNE — jo ende e rishikuar nga një avokat. Nuk duhet trajtuar si përfundimtare apo e besueshme deri sa të kalojë atë rishikim. Kjo faqe përjashtohet qëllimisht nga motorët e kërkimit (noindex) deri në përfundimin e rishikimit.",
-    "placeholderIntro": "Detajet e mëposhtme në këtë skicë janë vendmbajtëse (placeholder) dhe duhen zëvendësuar përpara publikimit:",
-    "placeholderItems": [
-      "Emri i subjektit juridik, numri i regjistrimit dhe adresa e regjistruar",
-      "Tarifat aktuale të dërgesës dhe afatet kohore",
-      "Periudha e kthimit/tërheqjes sipas ligjit vendas",
-      "Adresa email/telefoni për kërkesa mbi të dhënat personale"
-    ],
     "terms": {
       "title": "Kushtet e Përdorimit",
       "sections": [
         {
           "heading": "1. Kush e operon këtë dyqan",
           "body": [
-            "Majestiqos është një shitës online i pavarur. [EMRI I SUBJEKTIT JURIDIK, NUMRI I REGJISTRIMIT DHE ADRESA E REGJISTRUAR — PËR T'U KONFIRMUAR] është biznesi që qëndron pas kësaj faqeje. Të dhënat e kontaktit gjenden në faqen Kontakt dhe në fund të çdo faqeje; aktualisht ato janë vendmbajtëse (placeholder) në pritje të konfirmimit — shih njoftimin në krye të kësaj faqeje."
+            "Majestiqos është një shitës online i pavarur dhe biznesi që qëndron pas kësaj faqeje. Të dhënat e kontaktit gjenden në faqen Kontakt dhe në fund të çdo faqeje."
           ]
         },
         {
@@ -230,15 +222,14 @@
         {
           "heading": "6. Dërgesa",
           "body": [
-            "Aktualisht dërgojmë në Kosovë, Shqipëri dhe Maqedoninë e Veriut. Kostoja e dërgesës është [€2.00 për Kosovë; €5.00 për Shqipërinë, Maqedoninë e Veriut dhe destinacione të tjera — KONFIRMO TARIFAT AKTUALE, TË CILAT VENDOSEN NGA PANELI I ADMINISTRATORIT DHE MUND TË NDRYSHOJNË]. Dërgesa zakonisht zgjat [2–5 ditë pune — PËR T'U KONFIRMUAR], në varësi të destinacionit dhe disponueshmërisë së korrierit. Do të kontaktoheni me telefon përpara dorëzimit."
+            "Aktualisht dërgojmë në Kosovë, Shqipëri dhe Maqedoninë e Veriut. Kostoja e dërgesës është €2.00 për Kosovë dhe €5.00 për Shqipërinë, Maqedoninë e Veriut dhe destinacione të tjera. Dërgesa zakonisht zgjat 2–5 ditë pune, në varësi të destinacionit dhe disponueshmërisë së korrierit. Do të kontaktoheni me telefon përpara dorëzimit."
           ]
         },
         {
           "heading": "7. Anulimi dhe kthimi",
           "body": [
             "Mund të anuloni një porosi në çdo kohë përpara se të dërgohet, duke na kontaktuar me të dhënat në faqen Kontakt. Meqë pagesa mblidhet në dorëzim, jeni gjithashtu të lirë ta refuzoni porosinë te dera nëse nuk e doni më, pa asnjë kosto për ju.",
-            "Pasi një porosi është pranuar dhe paguar, kthimet trajtohen rast pas rasti — na kontaktoni brenda [14 ditësh — PËR T'U KONFIRMUAR] nga dorëzimi nëse një produkt mbërrin i dëmtuar, me defekt, apo dukshëm i ndryshëm nga sa është porositur.",
-            "[KY SEKSION DUHET TË PËRPUTHET ME LIGJIN PËR MBROJTJEN E KONSUMATORIT NË KOSOVË/SHQIPËRI/MAQEDONINË E VERIUT — NJË AVOKAT DUHET TË KONFIRMOJË PERIUDHËN E TËRHEQJES DHE TË DREJTAT E KTHIMIT PARA SE KJO TË SHKOJË NË PRODHIM.]"
+            "Pasi një porosi është pranuar dhe paguar, kthimet trajtohen rast pas rasti — na kontaktoni brenda 14 ditësh nga dorëzimi nëse një produkt mbërrin i dëmtuar, me defekt, apo dukshëm i ndryshëm nga sa është porositur."
           ]
         },
         {
@@ -303,7 +294,7 @@
         {
           "heading": "8. Na kontaktoni",
           "body": [
-            "Për çdo pyetje rreth kësaj politike, ose për të ushtruar të drejtat e sipërpërmendura, na kontaktoni me të dhënat në faqen Kontakt. [EMAIL/TELEFON KONTAKTI PËR KËRKESA TË TË DHËNAVE — PËR T'U KONFIRMUAR.]"
+            "Për çdo pyetje rreth kësaj politike, ose për të ushtruar të drejtat e sipërpërmendura, na kontaktoni me të dhënat në faqen Kontakt."
           ]
         }
       ]

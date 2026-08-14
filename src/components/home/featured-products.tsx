@@ -36,7 +36,10 @@ export async function FeaturedProducts({ locale }: { locale: Locale }) {
           }
         />
 
-        <Stagger className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <Stagger
+          className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4"
+          immediateCount={FEATURED_LIMIT}
+        >
           {products.map((product, index) => (
             <ProductCard
               key={product.id}

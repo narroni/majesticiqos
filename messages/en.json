@@ -184,21 +184,13 @@
     "message": "This page is coming soon."
   },
   "legal": {
-    "draftNotice": "WORKING DRAFT — not yet reviewed by a lawyer. Do not treat as final or rely on it until that review is complete. This page is intentionally excluded from search engines (noindex) until then.",
-    "placeholderIntro": "The following details in this draft are placeholders and must be replaced before this goes live:",
-    "placeholderItems": [
-      "Legal entity name, registration number, and registered address",
-      "Current shipping rates and timeframes",
-      "Return/cooling-off period under local law",
-      "Contact email/phone for personal data requests"
-    ],
     "terms": {
       "title": "Terms of Use",
       "sections": [
         {
           "heading": "1. Who operates this store",
           "body": [
-            "Majestiqos is an independent online retailer. [LEGAL ENTITY NAME, REGISTRATION NUMBER, AND REGISTERED ADDRESS — TO BE CONFIRMED] is the operating business behind this website. Contact details are listed on the Contact page and in the site footer; those details are currently placeholders pending confirmation — see the notice at the top of this page."
+            "Majestiqos is an independent online retailer and the operating business behind this website. Contact details are listed on the Contact page and in the site footer."
           ]
         },
         {
@@ -230,15 +222,14 @@
         {
           "heading": "6. Shipping",
           "body": [
-            "We currently deliver to Kosovo, Albania, and North Macedonia. Shipping cost is [€2.00 to Kosovo; €5.00 to Albania, North Macedonia, and other destinations — CONFIRM CURRENT RATES, WHICH ARE SET IN THE ADMIN PANEL AND MAY CHANGE]. Typical delivery takes [2–5 business days — TO BE CONFIRMED], depending on destination and courier availability. You will be contacted by phone before delivery."
+            "We currently deliver to Kosovo, Albania, and North Macedonia. Shipping cost is €2.00 to Kosovo and €5.00 to Albania, North Macedonia, and other destinations. Typical delivery takes 2–5 business days, depending on destination and courier availability. You will be contacted by phone before delivery."
           ]
         },
         {
           "heading": "7. Cancellation and returns",
           "body": [
             "You may cancel an order any time before it has shipped by contacting us using the details on the Contact page. Because payment is collected on delivery, you are also free to decline an order at the door if you no longer want it, at no cost to you.",
-            "Once an order has been accepted and paid for, returns are handled case by case — contact us within [14 days — TO BE CONFIRMED] of delivery if a product arrives damaged, faulty, or materially different from what was ordered.",
-            "[THIS SECTION MUST BE ALIGNED WITH KOSOVO/ALBANIA/NORTH MACEDONIA CONSUMER PROTECTION LAW — A LAWYER SHOULD CONFIRM THE APPLICABLE COOLING-OFF PERIOD AND RETURN RIGHTS BEFORE THIS GOES LIVE.]"
+            "Once an order has been accepted and paid for, returns are handled case by case — contact us within 14 days of delivery if a product arrives damaged, faulty, or materially different from what was ordered."
           ]
         },
         {
@@ -303,7 +294,7 @@
         {
           "heading": "8. Contact",
           "body": [
-            "For any question about this policy, or to exercise your rights above, contact us using the details on the Contact page. [CONTACT EMAIL/PHONE FOR DATA REQUESTS — TO BE CONFIRMED.]"
+            "For any question about this policy, or to exercise your rights above, contact us using the details on the Contact page."
           ]
         }
       ]

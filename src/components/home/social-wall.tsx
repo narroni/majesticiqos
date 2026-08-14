@@ -27,6 +27,7 @@ export async function SocialWall({ locale }: { locale: Locale }) {
     t("followHandle", { handle: siteConfig.instagramHandle });
   const followUrl =
     (locale === "sq" ? settings.socialFollowUrlSq : settings.socialFollowUrlEn) ||
+    settings.instagramUrl ||
     `https://instagram.com/${siteConfig.instagramHandle}`;
 
   return (

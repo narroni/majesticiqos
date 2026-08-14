@@ -12,33 +12,15 @@ interface LegalPageProps {
   namespace: "legal.terms" | "legal.privacy";
 }
 
-// Shared renderer for /terms and /privacy — both are unreviewed legal
-// drafts (see each page's generateMetadata: noindex until a lawyer signs
-// off), so both get the same prominent draft banner and placeholder list
-// rather than that warning living only in a comment someone could miss.
+// Shared renderer for /terms and /privacy.
 export async function LegalPage({ namespace }: LegalPageProps) {
   const t = await getTranslations();
   const title = t(`${namespace}.title`);
   const sections = t.raw(`${namespace}.sections`) as LegalSection[];
-  const placeholderItems = t.raw("legal.placeholderItems") as string[];
 
   return (
     <Container className="flex max-w-2xl flex-col gap-10 py-16 lg:py-24">
       <div className="flex flex-col gap-4">
-        <div className="border-warning/40 bg-warning/10 flex flex-col gap-2 rounded-md border p-4">
-          <p className="text-warning font-mono text-xs tracking-[0.1em] uppercase">
-            {t("legal.draftNotice")}
-          </p>
-          <div className="text-fg-secondary font-body text-sm">
-            <p>{t("legal.placeholderIntro")}</p>
-            <ul className="mt-1 list-disc pl-5">
-              {placeholderItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
         <h1 className="text-h1 font-display text-fg-primary">{title}</h1>
       </div>
 

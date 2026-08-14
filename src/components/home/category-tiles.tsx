@@ -7,7 +7,6 @@ import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Link } from "@/i18n/navigation";
 import { getCategories } from "@/lib/data/categories";
-import { cx } from "@/lib/utils";
 import type { Locale } from "@/types";
 
 const TILE_COUNT = 3;
@@ -26,15 +25,12 @@ export async function CategoryTiles({ locale }: { locale: Locale }) {
       <Container className="flex flex-col gap-10">
         <SectionHeading eyebrow={t("eyebrow")} title={t("heading")} />
 
-        <Stagger className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {categories.map((category, index) => (
+        <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category) => (
             <Link
               key={category.id}
               href={`/categories/${category.slug}`}
-              className={cx(
-                "group bg-bg-subtle relative flex aspect-4/5 items-end overflow-hidden rounded-md",
-                index === 0 && "lg:row-span-2 lg:aspect-auto",
-              )}
+              className="group bg-bg-subtle relative flex aspect-4/5 items-end overflow-hidden rounded-md"
             >
               {category.imageUrl ? (
                 <Image

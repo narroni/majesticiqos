@@ -57,7 +57,7 @@ export default async function CategoriesPage({
 
       <h1 className="text-h1 font-display text-fg-primary">{t("heading")}</h1>
 
-      <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" immediateCount={3}>
         {categories.map((category) => (
           <Link
             key={category.id}

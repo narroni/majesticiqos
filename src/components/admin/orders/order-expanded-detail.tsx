@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { OrderItemThumbnail } from "@/components/shared/order-item-thumbnail";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { updateOrderNote } from "@/lib/actions/admin-orders";
@@ -62,10 +63,20 @@ export function OrderExpandedDetail({ order }: { order: AdminOrderRow }) {
         <ul className="flex flex-col gap-1.5">
           {order.items.map((item) => (
             <li key={item.id} className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-fg-secondary font-body">
-                {item.name} <span className="text-fg-muted font-mono text-xs">×{item.quantity}</span>
+              <div className="flex min-w-0 items-center gap-2">
+                <OrderItemThumbnail
+                  imageUrl={item.imageUrl}
+                  alt={item.name}
+                  sizeClassName="size-16 sm:size-40"
+                  imageSizes="(min-width: 640px) 160px, 64px"
+                />
+                <span className="text-fg-secondary font-body truncate">
+                  {item.name} <span className="text-fg-muted font-mono text-xs">×{item.quantity}</span>
+                </span>
+              </div>
+              <span className="text-fg-primary font-mono shrink-0">
+                {formatPrice(item.lineTotalCents, "en")}
               </span>
-              <span className="text-fg-primary font-mono">{formatPrice(item.lineTotalCents, "en")}</span>
             </li>
           ))}
         </ul>

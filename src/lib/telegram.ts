@@ -21,6 +21,14 @@ export interface NewOrderNotification {
   totalFormatted: string;
   locale: Locale;
   adminUrl: string;
+  /**
+   * The snapshotted image_url of the order's single line item — only ever
+   * set by the caller when the order has exactly one distinct product line
+   * (see src/lib/actions/checkout.ts). A multi-item order has no single
+   * photo that represents it, so this stays text-only rather than sending
+   * several images at once.
+   */
+  singleItemPhotoUrl?: string | null;
 }
 
 function escapeHtml(value: string): string {
@@ -86,25 +94,48 @@ export async function sendNewOrderTelegramNotification(
     return;
   }
 
-  try {
-    const response = await fetch(`${TELEGRAM_API_BASE}/bot${token}/sendMessage`, {
+  async function post(endpoint: "sendPhoto" | "sendMessage", body: Record<string, unknown>) {
+    const response = await fetch(`${TELEGRAM_API_BASE}/bot${token}/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: buildMessage(order),
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-      }),
+      body: JSON.stringify(body),
     });
-
     if (!response.ok) {
-      const body = await response.text().catch(() => "");
+      const responseBody = await response.text().catch(() => "");
       console.error(
-        `[telegram] sendMessage failed for order ${order.orderNumber}: ${response.status} ${body.slice(0, 300)}`,
+        `[telegram] ${endpoint} failed for order ${order.orderNumber}: ${response.status} ${responseBody.slice(0, 300)}`,
       );
     }
+    return response.ok;
+  }
+
+  // sendPhoto's caption has a 1024-char limit (vs. sendMessage's 4096) —
+  // buildMessage's output is a handful of short lines, well within it.
+  const textBody = {
+    chat_id: chatId,
+    text: buildMessage(order),
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+  };
+
+  try {
+    if (order.singleItemPhotoUrl) {
+      const photoSent = await post("sendPhoto", {
+        chat_id: chatId,
+        photo: order.singleItemPhotoUrl,
+        caption: buildMessage(order),
+        parse_mode: "HTML",
+      });
+      // A bad/unreachable snapshot URL must not cost the whole notification
+      // — fall back to the plain text version rather than sending nothing.
+      if (!photoSent) {
+        await post("sendMessage", textBody);
+      }
+      return;
+    }
+
+    await post("sendMessage", textBody);
   } catch (error) {
-    console.error(`[telegram] sendMessage threw for order ${order.orderNumber}`, error);
+    console.error(`[telegram] notification threw for order ${order.orderNumber}`, error);
   }
 }

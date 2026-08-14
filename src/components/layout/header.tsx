@@ -2,6 +2,7 @@
 
 import { Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
@@ -68,11 +69,15 @@ export function Header() {
       )}
     >
       <Container className="flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase"
-        >
-          {siteConfig.name}
+        <Link href="/" className="shrink-0">
+          <Image
+            src="/logo.png"
+            alt={siteConfig.name}
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -136,9 +141,7 @@ export function Header() {
       {activeOverlay === "menu" && (
         <div className="bg-bg-base fixed inset-0 z-50 flex flex-col">
           <Container className="flex h-16 items-center justify-between">
-            <span className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase">
-              {siteConfig.name}
-            </span>
+            <Image src="/logo.png" alt={siteConfig.name} width={36} height={36} className="h-9 w-9" />
             <button
               type="button"
               aria-label={tCommon("close")}

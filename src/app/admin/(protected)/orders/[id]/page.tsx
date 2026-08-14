@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { CopyAddressButton } from "@/components/admin/orders/copy-address-button";
 import { OrderNoteForm } from "@/components/admin/orders/order-note-form";
 import { OrderStatusChanger } from "@/components/admin/orders/order-status-changer";
 import { OrderStatusStepper } from "@/components/admin/orders/order-status-stepper";
+import { OrderItemThumbnail } from "@/components/shared/order-item-thumbnail";
 import { COUNTRY_LABEL } from "@/lib/country-labels";
 import { getAdminOrderById } from "@/lib/data/admin-orders";
 import { formatAdminDateTime, formatPrice } from "@/lib/utils";
@@ -114,17 +114,12 @@ export default async function AdminOrderDetailPage({ params }: AdminOrderDetailP
         <ul className="flex flex-col gap-3">
           {order.items.map((item) => (
             <li key={item.id} className="flex items-center gap-3">
-              <div className="bg-bg-subtle relative size-14 shrink-0 overflow-hidden rounded-sm">
-                {item.imageUrl ? (
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.name}
-                    fill
-                    sizes="56px"
-                    className="object-cover"
-                  />
-                ) : null}
-              </div>
+              <OrderItemThumbnail
+                imageUrl={item.imageUrl}
+                alt={item.name}
+                sizeClassName="size-28 sm:size-[280px]"
+                imageSizes="(min-width: 640px) 280px, 112px"
+              />
               <div className="flex flex-1 flex-col">
                 <span className="text-fg-primary font-body text-sm">{item.name}</span>
                 <span className="text-fg-muted font-mono text-xs">

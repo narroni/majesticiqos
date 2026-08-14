@@ -123,6 +123,7 @@ export async function getAdminOrders(filters: AdminOrderFilters = {}) {
 export interface AdminOrderRowItem {
   id: string;
   name: string;
+  imageUrl: string | null;
   quantity: number;
   unitPriceCents: number;
   lineTotalCents: number;
@@ -159,7 +160,7 @@ const DETAILED_LIST_COLUMNS = `
   id, order_number, first_name, last_name, phone, address_line, city, postal_code,
   country, customer_note, admin_note, subtotal_cents, shipping_cents, total_cents,
   status, created_at,
-  order_items(id, product_name_en, quantity, unit_price_cents, line_total_cents)
+  order_items(id, product_name_en, image_url, quantity, unit_price_cents, line_total_cents)
 `;
 
 interface DetailedListRow {
@@ -182,6 +183,7 @@ interface DetailedListRow {
   order_items: {
     id: string;
     product_name_en: string;
+    image_url: string | null;
     quantity: number;
     unit_price_cents: number;
     line_total_cents: number;
@@ -231,6 +233,7 @@ export async function getAdminOrdersDetailed(filters: AdminOrderFilters = {}) {
     items: row.order_items.map((item) => ({
       id: item.id,
       name: item.product_name_en,
+      imageUrl: item.image_url,
       quantity: item.quantity,
       unitPriceCents: item.unit_price_cents,
       lineTotalCents: item.line_total_cents,

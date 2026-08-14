@@ -427,6 +427,7 @@ async function submitCheckoutInner(
       totalFormatted: formatPrice(totalCents, "en"),
       locale: actionResult.data.locale,
       adminUrl: `${getSiteUrl()}/admin/orders/${row.out_id}`,
+      singleItemPhotoUrl: orderItems.length === 1 ? orderItems[0].image_url : null,
     }),
   );
 

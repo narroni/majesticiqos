@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { siteConfig } from "@/config/site";
 import { requireLocale } from "@/lib/locale";
+import { getLogoDataUrl } from "@/lib/og-logo";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -24,7 +25,10 @@ export default async function LocaleOgImage({
   params: Promise<{ locale: string }>;
 }) {
   const locale = requireLocale((await params).locale);
-  const t = await getTranslations({ locale, namespace: "home.hero" });
+  const [t, logoDataUrl] = await Promise.all([
+    getTranslations({ locale, namespace: "home.hero" }),
+    getLogoDataUrl(),
+  ]);
 
   return new ImageResponse(
     (
@@ -36,20 +40,11 @@ export default async function LocaleOgImage({
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: "24px",
+          gap: "20px",
           background: COLORS.bgBase,
         }}
       >
-        <span
-          style={{
-            color: COLORS.accent,
-            fontSize: 28,
-            letterSpacing: 6,
-            textTransform: "uppercase",
-          }}
-        >
-          {siteConfig.name}
-        </span>
+        <img src={logoDataUrl} width={110} height={110} alt={siteConfig.name} />
         <span style={{ color: COLORS.fgPrimary, fontSize: 60, fontWeight: 600 }}>
           {t("title")}
         </span>

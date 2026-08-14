@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 
 import { ClearCartOnConfirmation } from "@/components/checkout/clear-cart-on-confirmation";
 import { Container } from "@/components/shared/container";
+import { OrderItemThumbnail } from "@/components/shared/order-item-thumbnail";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Link } from "@/i18n/navigation";
 import { getOrderByPublicToken } from "@/lib/data/orders";
@@ -65,17 +65,12 @@ export default async function OrderConfirmationPage({
           <ul className="flex flex-col gap-3">
             {order.items.map((item, index) => (
               <li key={`${item.productId}-${index}`} className="flex items-center gap-3">
-                <div className="bg-bg-subtle relative h-14 w-12 shrink-0 overflow-hidden rounded-sm">
-                  {item.imageUrl ? (
-                    <Image
-                      src={item.imageUrl}
-                      alt={currentLocale === "sq" ? item.nameSq : item.nameEn}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
-                  ) : null}
-                </div>
+                <OrderItemThumbnail
+                  imageUrl={item.imageUrl}
+                  alt={currentLocale === "sq" ? item.nameSq : item.nameEn}
+                  sizeClassName="size-24 sm:size-60"
+                  imageSizes="(min-width: 640px) 240px, 96px"
+                />
                 <div className="flex flex-1 flex-col">
                   <span className="text-fg-primary font-body line-clamp-1 text-sm">
                     {currentLocale === "sq" ? item.nameSq : item.nameEn}

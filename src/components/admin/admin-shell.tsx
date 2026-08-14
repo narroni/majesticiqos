@@ -1,6 +1,7 @@
 "use client";
 
 import { ClipboardList, FolderTree, LayoutDashboard, Package, Settings } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode } from "react";
@@ -52,9 +53,12 @@ export function AdminShell({ admin, children }: AdminShellProps) {
       {/* Desktop sidebar */}
       <aside className="border-border bg-bg-elevated hidden w-64 shrink-0 flex-col justify-between border-r p-6 lg:flex">
         <div className="flex flex-col gap-8">
-          <span className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase">
-            {siteConfig.name} Admin
-          </span>
+          <div className="flex items-center gap-2">
+            <Image src="/logo.png" alt={siteConfig.name} width={32} height={32} className="h-8 w-8" />
+            <span className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase">
+              Admin
+            </span>
+          </div>
           <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <Link
@@ -87,9 +91,12 @@ export function AdminShell({ admin, children }: AdminShellProps) {
 
       {/* Mobile top bar */}
       <header className="border-border bg-bg-elevated flex items-center justify-between border-b px-4 py-3 lg:hidden">
-        <span className="font-display text-fg-primary text-base tracking-[0.1em] uppercase">
-          {siteConfig.name} Admin
-        </span>
+        <div className="flex items-center gap-2">
+          <Image src="/logo.png" alt={siteConfig.name} width={28} height={28} className="h-7 w-7" />
+          <span className="font-display text-fg-primary text-base tracking-[0.1em] uppercase">
+            Admin
+          </span>
+        </div>
         <SignOutButton className="text-fg-secondary hover:text-danger" />
       </header>
 

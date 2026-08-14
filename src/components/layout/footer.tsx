@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import { Suspense } from "react";
 
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
@@ -21,9 +22,7 @@ export async function Footer() {
     <footer className="bg-bg-elevated border-border border-t">
       <Container className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:py-24">
         <div className="flex flex-col gap-3">
-          <span className="font-display text-fg-primary text-lg tracking-[0.1em] uppercase">
-            {siteConfig.name}
-          </span>
+          <Image src="/logo.png" alt={siteConfig.name} width={40} height={40} className="h-10 w-10" />
           {/* brandTagline is placeholder copy pending the final brand name (see BLUEPRINT §14.1). */}
           <p className="text-fg-secondary font-body text-sm">
             {t("brandTagline")}

@@ -3,6 +3,7 @@ import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 import { getProductBySlug } from "@/lib/data/products";
 import { requireLocale } from "@/lib/locale";
+import { getLogoDataUrl } from "@/lib/og-logo";
 import { formatPrice } from "@/lib/utils";
 
 export const size = { width: 1200, height: 630 };
@@ -29,7 +30,10 @@ interface OgImageProps {
 export default async function ProductOgImage({ params }: OgImageProps) {
   const { locale: rawLocale, slug } = await params;
   const locale = requireLocale(rawLocale);
-  const product = await getProductBySlug(slug, locale);
+  const [product, logoDataUrl] = await Promise.all([
+    getProductBySlug(slug, locale),
+    getLogoDataUrl(),
+  ]);
 
   const name = product?.name ?? siteConfig.name;
   const price = product ? formatPrice(product.effectivePriceCents, locale) : null;
@@ -55,16 +59,7 @@ export default async function ProductOgImage({ params }: OgImageProps) {
             gap: "20px",
           }}
         >
-          <span
-            style={{
-              color: COLORS.accent,
-              fontSize: 22,
-              letterSpacing: 4,
-              textTransform: "uppercase",
-            }}
-          >
-            {siteConfig.name}
-          </span>
+          <img src={logoDataUrl} width={64} height={64} alt={siteConfig.name} />
           <span
             style={{
               color: COLORS.fgPrimary,

@@ -43,9 +43,7 @@ export function FormDemo() {
     defaultValues: { name: "", notes: "" },
   });
 
-  function onSubmit(values: DemoFormValues) {
-    console.log(values);
-  }
+  function onSubmit() {}
 
   return (
     <Form {...form}>

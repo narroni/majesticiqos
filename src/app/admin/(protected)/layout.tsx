@@ -1,6 +1,8 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { AdminShell } from "@/components/admin/admin-shell";
+import { ADMIN_SIDEBAR_COLLAPSED_COOKIE } from "@/lib/admin-sidebar-cookie";
 import { getAdminUser } from "@/lib/auth/get-admin-user";
 import { createClient } from "@/lib/supabase/server";
 
@@ -13,7 +15,7 @@ export default async function ProtectedAdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const admin = await getAdminUser();
+  const [admin, cookieStore] = await Promise.all([getAdminUser(), cookies()]);
 
   if (!admin) {
     const supabase = await createClient();
@@ -21,5 +23,11 @@ export default async function ProtectedAdminLayout({
     redirect("/admin/login?error=unauthorized");
   }
 
-  return <AdminShell admin={admin}>{children}</AdminShell>;
+  const initialSidebarCollapsed = cookieStore.get(ADMIN_SIDEBAR_COLLAPSED_COOKIE)?.value === "1";
+
+  return (
+    <AdminShell admin={admin} initialSidebarCollapsed={initialSidebarCollapsed}>
+      {children}
+    </AdminShell>
+  );
 }
